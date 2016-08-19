@@ -7,5 +7,3 @@ exports.render = function(att, options) {
 	var result = assets.load().fill(html_content_str, filename)
 	return result
 }
-
-console.log(exports.render({}, {filename: 'my.js'}))
