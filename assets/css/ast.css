@@ -1,0 +1,42 @@
+#content span {
+	display: inline-block;
+}
+
+/* fill braket... */
+
+.ExpressionStatement:after {
+	content: ";";
+}
+
+.CallExpression > .callee:before {
+	content: "(";
+}
+
+.CallExpression > .callee:after {
+	content: ")";
+}
+
+.CallExpression > .arguments:before {
+	content: "(";
+}
+
+.CallExpression > .arguments:after {
+	content: ")";
+}
+
+.CallExpression > .arguments > .argument:after {
+	content: ", ";
+}
+
+.CallExpression > .arguments > .argument:last-child:after {
+	content: none;
+}
+
+/* Syntax Highlight */
+.keyword {
+	color: red;
+}
+
+.keyword:hover {
+	background: gray;
+}
