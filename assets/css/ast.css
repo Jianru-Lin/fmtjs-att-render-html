@@ -4,7 +4,7 @@
 
 /* fill braket... */
 
-.ExpressionStatement:after {
+/*.ExpressionStatement:after {
 	content: ";";
 }
 
@@ -32,11 +32,63 @@
 	content: none;
 }
 
+.FunctionExpression > .name:before,
+.FunctionDeclaration > .name:before {
+	content: " ";
+}
+
+.FunctionExpression > .params:before,
+.FunctionDeclaration > .params:before {
+	content: " (";
+}
+
+.FunctionExpression > .params:after,
+.FunctionDeclaration > .params:after {
+	content: ") ";
+}
+
+.FunctionExpression > .params > .param:after,
+.FunctionDeclaration > .params > .param:after {
+	content: ", ";
+}
+
+.FunctionExpression > .params > .param:last-child:after,
+.FunctionDeclaration > .params > .param:last-child:after {
+	content: none;
+}*/
+
+.FunctionExpression > .body,
+.FunctionDeclaration > .body {
+	vertical-align: top;
+}
+
+.BlockStatement > .collapsable > .body {
+	border: solid 1px black;
+	vertical-align: top;
+}
+
+/*.NewExpression > .arguments > .argument:after {
+	content: ", ";
+}
+
+.NewExpression > .arguments > .argument:last-child:after {
+	content: none;
+}*/
+
 /* Syntax Highlight */
+
 .keyword {
-	color: red;
+	color: blue;
 }
 
 .keyword:hover {
 	background: gray;
+}
+
+.identifier {
+	color: red;
+}
+
+.identifier:hover {
+	background: whitesmoke;
 }
