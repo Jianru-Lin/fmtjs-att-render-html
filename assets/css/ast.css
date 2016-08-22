@@ -95,8 +95,13 @@
 
 .left-coll.hover, 
 .right-coll.hover {
-	color: red;
+	background: red;
+	color: white;
 	cursor: pointer;
+}
+
+.collapsable.hover {
+	background: #ffe7e7;
 }
 
 .collapsable.hidden {

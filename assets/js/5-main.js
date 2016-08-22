@@ -16,22 +16,22 @@ window.onload = function() {
 	// 可折叠特性实现
 	$('#content').on('mouseenter', '.left-coll', function() {
 		$this = $(this)
-		$this.addClass('hover').next().next().addClass('hover')
+		$this.addClass('hover').next().addClass('hover').next().addClass('hover')
 	})
 
 	$('#content').on('mouseenter', '.right-coll', function() {
 		$this = $(this)
-		$this.addClass('hover').prev().prev().addClass('hover')
+		$this.addClass('hover').prev().addClass('hover').prev().addClass('hover')
 	})
 
 	$('#content').on('mouseleave', '.left-coll', function() {
 		$this = $(this)
-		$this.removeClass('hover').next().next().removeClass('hover')
+		$this.removeClass('hover').next().removeClass('hover').next().removeClass('hover')
 	})
 
 	$('#content').on('mouseleave', '.right-coll', function() {
 		$this = $(this)
-		$this.removeClass('hover').prev().prev().removeClass('hover')
+		$this.removeClass('hover').prev().removeClass('hover').prev().removeClass('hover')
 	})
 
 	$('#content').on('click', '.left-coll', function() {

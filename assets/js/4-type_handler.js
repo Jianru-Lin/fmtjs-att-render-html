@@ -225,9 +225,28 @@ type_handler['IfStatement'] = function(ast, ctx) {
 	)
 }
 
+type_handler['WhileStatement'] = function(ast, ctx) {
+	// console.log(ast)
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('while'),
+			vsp(),
+			vdom('span', 'test', vbrace(process_ast(ast.test, ctx))),
+			vsp(),
+			vdom('span', 'body', process_ast(ast.body, ctx))
+		]
+	)
+}
+
+type_handler['TryStatement'] = function(ast, ctx) {
+	console.log(ast)
+}
+
 // TODO 参数列表中的逗号间隔未解决 
 type_handler['NewExpression'] = function(ast, ctx) {
-	console.log(ast)
+	// console.log(ast)
 	assert(ast.callee)
 	assert(ast.arguments)
 	return vdom(
