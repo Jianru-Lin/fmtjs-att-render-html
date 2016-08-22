@@ -156,27 +156,27 @@ function vcomma() {
 // vdom left & right brace
 function vbrace(children) {
 	return [
-		vdom('span', 'left-brace', '('),
+		vdom('span', ['left-coll', 'brace'], '('),
 		vdom('span', 'collapsable', children),
-		vdom('span', 'right-brace', ')')
+		vdom('span', ['right-coll', 'brace'], ')')
 	]
 }
 
 // vdom left & right bracket
 function vbracket(children) {
 	return [
-		vdom('span', 'left-bracket', '{'),
+		vdom('span', ['left-coll', 'bracket'], '{'),
 		vdom('span', 'collapsable', children),
-		vdom('span', 'right-bracket', '}')
+		vdom('span', ['right-coll', 'bracket'], '}')
 	]
 }
 
 // vdom left & right square bracket
 function vsqbracket(children) {
 	return [
-		vdom('span', 'left-square-bracket', '['),
+		vdom('span', ['left-coll', 'square-bracket'], '['),
 		vdom('span', 'collapsable', children),
-		vdom('span', 'right-square-bracket', ']')
+		vdom('span', ['right-coll', 'square-bracket'], ']')
 	]
 }
 
@@ -192,4 +192,17 @@ function vjoin(children, j_child) {
 		}
 	})
 	return list
+}
+
+// 生成三个 id ，用于辅助实现折叠特性
+function tri_id() {
+	if (!window._next_tri_id) {
+		window._next_tri_id = 1
+	}
+	var id = window._next_tri_id
+	var result = [id, id+1, id+2].map(function(i) {
+		return 'collapsable-' + i
+	})
+	window._next_tri_id += 3
+	return result
 }

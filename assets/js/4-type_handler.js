@@ -6,11 +6,7 @@ type_handler['Program'] = function(ast, ctx) {
 	return vdom(
 		'div', 
 		ast.type,
-		function() {
-			return ast.body.map(function(child) {
-				return process_ast(child, ctx)
-			})
-		}
+		vdom('span', 'body', process_ast_list(ast.body, ctx))
 	)
 }
 
@@ -22,13 +18,13 @@ type_handler['FunctionDeclaration'] = function(ast, ctx) {
 		[
 			vdom('span', 'keyword','function'),
 			vsp(),
-			vdom('span', ['name'], process_ast(ast.id, ctx)),
+			vdom('span', 'id', process_ast(ast.id, ctx)),
 			vsp(),
-			vbrace(vdom('span', 'params', function() {
-				return vjoin(process_ast_list(ast.params, ctx).map(wrap_vdom('span', 'param')), function() {
+			vdom('span', 'params', function() {
+				return vbrace(vjoin(process_ast_list(ast.params, ctx).map(wrap_vdom('span', 'param')), function() {
 					return [vcomma(), vsp()]
-				})
-			})),
+				}))
+			}),
 			vsp(),
 			vdom('span', 'body', [process_ast(ast.body, ctx)])
 		]
@@ -51,11 +47,11 @@ type_handler['FunctionExpression'] = function(ast, ctx) {
 					]
 				}
 			},
-			vbrace(vdom('span', 'params', function() {
-				return vjoin(process_ast_list(ast.params, ctx).map(wrap_vdom('span', 'param')), function() {
+			vdom('span', 'params', function() {
+				return vbrace(vjoin(process_ast_list(ast.params, ctx).map(wrap_vdom('span', 'param')), function() {
 					return [vcomma(), vsp()]
-				})
-			})),
+				}))
+			}),
 			vsp(),
 			vdom('span', 'body', [process_ast(ast.body, ctx)])
 		]
@@ -67,7 +63,7 @@ type_handler['ExpressionStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
-			process_ast(ast.expression, ctx),
+			vdom('span', 'expression', process_ast(ast.expression, ctx)),
 			vsp(),
 			vsemi()
 		]
@@ -79,12 +75,12 @@ type_handler['CallExpression'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
-			vbrace(vdom('span', 'callee', [process_ast(ast.callee, ctx)])),
-			vbrace(vdom('span', 'arguments', function() {
-				return vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
+			vdom('span', 'callee', vbrace(process_ast(ast.callee, ctx))),
+			vdom('span', 'arguments', function() {
+				return vbrace(vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
 					return [vcomma(), vsp()]
-				})
-			}))
+				}))
+			})
 		]
 	)
 }
@@ -93,9 +89,7 @@ type_handler['BlockStatement'] = function(ast, ctx) {
 	return vdom(
 		'div',
 		ast.type,
-		vbracket(function() {
-			return vdom('span', 'body', process_ast_list(ast.body, ctx))
-		})
+		vdom('span', 'body', vbracket(process_ast_list(ast.body, ctx)))
 	)
 }
 
@@ -108,7 +102,7 @@ type_handler['VariableDeclaration'] = function(ast, ctx) {
 	return vdom(
 		'div',
 		ast.type,
-		process_ast_list(ast.declarations, ctx)
+		vdom('span', 'declarations', process_ast_list(ast.declarations, ctx))
 	)
 }
 
@@ -120,17 +114,21 @@ type_handler['VariableDeclarator'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
-			vdom('span', 'keyword', kind),
+			vdom('span', 'kind', vdom('span', 'keyword', kind)),
 			vsp(),
-			process_ast(ast.id, ctx),
+			vdom('span', 'id', process_ast(ast.id, ctx)),
 			function() {
 				if (ast.init) {
-					return [
-						vsp(),
-						vdom('span', 'eq', '='),
-						vsp(),
-						process_ast(ast.init, ctx)
-					]
+					return vdom(
+						'span',
+						'init',
+						[
+							vsp(),
+							vdom('span', 'eq', '='),
+							vsp(),
+							vdom('span', 'init', process_ast(ast.init, ctx))
+						]
+					)
 				}
 			},
 			vsp(),
@@ -167,7 +165,7 @@ type_handler['ReturnStatement'] = function(ast, ctx) {
 				if (ast.argument) {
 					return [
 						vsp(),
-						process_ast(ast.argument, ctx)
+						vdom('span', 'argument', process_ast(ast.argument, ctx))
 					]
 				}
 			},
@@ -184,8 +182,8 @@ type_handler['MemberExpression'] = function(ast, ctx) {
 			'span',
 			ast.type,
 			[
-				process_ast(ast.object, ctx),
-				vsqbracket(process_ast(ast.property, ctx))
+				vdom('span', 'object', process_ast(ast.object, ctx)),
+				vdom('span', 'property', vsqbracket(process_ast(ast.property, ctx)))
 			]
 		)
 	}
@@ -194,9 +192,9 @@ type_handler['MemberExpression'] = function(ast, ctx) {
 			'span',
 			ast.type,
 			[
-				process_ast(ast.object, ctx),
+				vdom('span', 'object', process_ast(ast.object, ctx)),
 				vdom('span', 'dot', '.'),
-				process_ast(ast.property, ctx)
+				vdom('span', 'property', process_ast(ast.property, ctx))
 			]
 		)
 	}
@@ -210,7 +208,7 @@ type_handler['IfStatement'] = function(ast, ctx) {
 		[
 			vdom('span', 'keyword', 'if'),
 			vsp(),
-			vbrace(vdom('span', 'test', process_ast(ast.test, ctx))),
+			vdom('span', 'test', vbrace(process_ast(ast.test, ctx))),
 			vsp(),
 			vdom('span', 'consequent', process_ast(ast.consequent, ctx)),
 			function() {

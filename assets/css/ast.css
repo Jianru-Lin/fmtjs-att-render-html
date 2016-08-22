@@ -62,7 +62,7 @@
 	vertical-align: top;
 }
 
-.BlockStatement > .collapsable > .body {
+.BlockStatement > .body > .collapsable {
 	border: solid 1px black;
 	vertical-align: top;
 }
@@ -91,4 +91,14 @@
 
 .identifier:hover {
 	background: whitesmoke;
+}
+
+.left-coll.hover, 
+.right-coll.hover {
+	color: red;
+	cursor: pointer;
+}
+
+.collapsable.hidden {
+	display: none !important;
 }
