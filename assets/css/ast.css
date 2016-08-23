@@ -2,8 +2,8 @@
 	display: inline-block;
 }
 
-#content div {
-	margin-bottom: 0.5em;
+#content div:not(:last-child) {
+	margin-bottom: 1.5em;
 }
 
 /* fill braket... */
@@ -67,9 +67,12 @@
 }
 
 .BlockStatement > .body > .collapsable {
-	border: solid 1px rgba(197, 197, 197, 0.68);
+	outline: solid 1px rgba(197, 197, 197, 0.68);
+	/*margin-top: -1px;*/
+	margin-top: -1em;
     background: rgba(162, 162, 162, 0.13);
     vertical-align: top;
+    padding: 1em;
 }
 
 /*.NewExpression > .arguments > .argument:after {

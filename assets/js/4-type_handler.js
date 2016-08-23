@@ -96,26 +96,32 @@ type_handler['BlockStatement'] = function(ast, ctx) {
 type_handler['VariableDeclaration'] = function(ast, ctx) {
 	// console.log(ast)
 	assert(ast.kind === 'var' || ast.kind === 'const')
-	ctx['VariableDeclarator'] = {
-		kind: ast.kind
-	}
 	return vdom(
 		'div',
 		ast.type,
-		vdom('span', 'declarations', process_ast_list(ast.declarations, ctx))
+		[
+			vdom('span', ['kind', ast.kind], vkeyword(ast.kind)),
+			vsp(),
+			vdom('span', 'declarations', function() {
+				return vjoin(process_ast_list(ast.declarations, ctx).map(wrap_vdom('span', 'declaration')), function() {
+					return [
+						vcomma(),
+						vsp()
+					]
+				})
+			}),
+			vsp(),
+			vsemi()
+		]
 	)
 }
 
 type_handler['VariableDeclarator'] = function(ast, ctx) {
 	// console.log(ast)
-	assert(ctx['VariableDeclarator'].kind === 'var' || ctx['VariableDeclarator'].kind === 'const')
-	var kind = ctx['VariableDeclarator'].kind
 	return vdom(
-		'div',
+		'span',
 		ast.type,
 		[
-			vdom('span', 'kind', vdom('span', 'keyword', kind)),
-			vsp(),
 			vdom('span', 'id', process_ast(ast.id, ctx)),
 			function() {
 				if (ast.init) {
@@ -130,9 +136,7 @@ type_handler['VariableDeclarator'] = function(ast, ctx) {
 						]
 					)
 				}
-			},
-			vsp(),
-			vsemi()
+			}
 		]
 	)
 }
@@ -286,7 +290,7 @@ type_handler['CatchClause'] = function(ast, ctx) {
 }
 
 type_handler['ForStatement'] = function(ast, ctx) {
-	console.log(ast)
+	// console.log(ast)
 	return vdom(
 		'div',
 		'ast.type',
@@ -296,19 +300,37 @@ type_handler['ForStatement'] = function(ast, ctx) {
 			// 少见的括号在结构之上的例外
 			vbrace([
 				vdom('span', 'init', process_ast(ast.init, ctx)),
+				function() {
+					// VariableDeclaration 会自己生成分号，因此我们不需要生成
+					if (ast.init && ast.init.type !== 'VariableDeclaration') {
+						return [vsp(), vsemi()]
+					}
+				},
+				function() {
+					if (ast.test) {
+						return [
+							vsp(),
+							vdom('span', 'test', process_ast(ast.test, ctx)),
+						]
+					}
+				},
 				vsp(),
 				vsemi(),
 				vsp(),
-				vdom('span', 'test', process_ast(ast.test, ctx)),
-				vsp(),
-				vsemi(),
-				vsp(),
-				vdom('span', 'update', process_ast(ast.update, ctx))
+				function() {
+					if (ast.test) {
+						return vdom('span', 'update', process_ast(ast.update, ctx))
+					}
+				}
 			]),
 			vsp(),
 			vdom('span', 'body', process_ast(ast.body, ctx))
 		]
 	)
+}
+
+type_handler['ForInStatement'] = function(ast, ctx) {
+	console.log(ast)
 }
 
 // TODO 参数列表中的逗号间隔未解决 
