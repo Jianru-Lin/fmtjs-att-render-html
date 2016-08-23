@@ -138,6 +138,11 @@ function vkeyword(text) {
 	return vdom('span', ['keyword', text], text)
 }
 
+// vdom operator
+function voperator(text) {
+	return vdom('span', 'operator', text)
+}
+
 // vdom space
 function vsp() {
 	return vdom('span', 'sp', ' ')

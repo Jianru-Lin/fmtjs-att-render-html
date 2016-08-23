@@ -507,6 +507,61 @@ type_handler['NewExpression'] = function(ast, ctx) {
 	)
 }
 
+type_handler['ConditionalExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'test', vbrace(process_ast(ast.test, ctx))),
+			vsp(),
+			voperator('?'),
+			vsp(),
+			vdom('span', 'consequent', vbrace(process_ast(ast.consequent, ctx))),
+			vsp(),
+			voperator(':'),
+			vsp(),
+			vdom('span', 'alternate', vbrace(process_ast(ast.alternate, ctx)))
+		]
+	)
+}
+
+type_handler['BinaryExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'left', vbrace(process_ast(ast.left, ctx))),
+			vsp(),
+			voperator(ast.operator),
+			vsp(),
+			vdom('span', 'right', vbrace(process_ast(ast.right, ctx))),
+		]
+	)
+}
+
+type_handler['UpdateExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		function() {
+			if (ast.prefix) {
+				return [
+					voperator(ast.operator),
+					vsp(),
+					vdom('span', 'argument', process_ast(ast.argument, ctx))
+				]
+			}
+			else {
+				return [
+					vdom('span', 'argument', process_ast(ast.argument, ctx)),
+					vsp(),
+					voperator(ast.operator)
+				]
+			}
+		}
+	)
+}
+
 type_handler['ThisExpression'] = function(ast, ctx) {
 	return vdom('span', [ast.type, 'keyword'], 'this')
 }
