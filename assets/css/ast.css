@@ -109,6 +109,24 @@
 	background: whitesmoke;
 }
 
+.operator {
+	color: green;
+}
+
+.operator:hover {
+	background: green;
+	color: white;
+}
+
+.Literal {
+	color: gray;
+}
+
+.Literal:hover {
+    background: gray;
+    color: white;
+}
+
 .left-coll.hover, 
 .right-coll.hover {
 	background: red;

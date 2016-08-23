@@ -149,23 +149,6 @@ type_handler['VariableDeclarator'] = function(ast, ctx) {
 	)
 }
 
-type_handler['AssignmentExpression'] = function(ast, ctx) {
-	// console.log(ast)
-	return vdom(
-		'span',
-		ast.type,
-		// vbrace([
-		[
-			vdom('span', 'left', process_ast(ast.left, ctx)),
-			vsp(),
-			vdom('span', 'eq', '='),
-			vsp(),
-			vdom('span', 'right', process_ast(ast.right, ctx))
-		]
-		// ])
-	)
-}
-
 type_handler['ReturnStatement'] = function(ast, ctx) {
 	// console.log(ast)
 	return vdom(
@@ -184,6 +167,23 @@ type_handler['ReturnStatement'] = function(ast, ctx) {
 			vsp(),
 			vsemi()
 		]
+	)
+}
+
+type_handler['AssignmentExpression'] = function(ast, ctx) {
+	// console.log(ast)
+	return vdom(
+		'span',
+		ast.type,
+		// vbrace([
+		[
+			vdom('span', 'left', process_ast(ast.left, ctx)),
+			vsp(),
+			voperator('='),
+			vsp(),
+			vdom('span', 'right', process_ast(ast.right, ctx))
+		]
+		// ])
 	)
 }
 
