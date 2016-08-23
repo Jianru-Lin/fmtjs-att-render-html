@@ -26,7 +26,7 @@ html, body {
 	background: #ffffaa;
 	font-size: 14px;
 	overflow: auto;
-    max-height: 400px;
+    /*max-height: 400px;*/
 }
 
 #log {

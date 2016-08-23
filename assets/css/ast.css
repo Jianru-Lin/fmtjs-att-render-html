@@ -82,6 +82,10 @@
     padding: 1em;
 }
 
+.ObjectExpression > .properties > .collapsable:empty {
+	display: none !important; /* 空对象不显示 */
+}
+
 .BlockStatement > .body > .collapsable {
 	outline: solid 1px rgba(197, 197, 197, 0.68);
 	margin-top: -1em;
