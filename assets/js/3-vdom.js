@@ -148,6 +148,11 @@ function vsp() {
 	return vdom('span', 'sp', ' ')
 }
 
+// vdom br
+function vbr() {
+	return vdom('br', '')
+}
+
 // vdom semicolon
 function vsemi() {
 	return vdom('span', 'semicolon', ';')

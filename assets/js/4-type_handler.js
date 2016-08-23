@@ -93,7 +93,8 @@ type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
 				return vjoin(process_ast_list(ast.declarations, ctx).map(wrap_vdom('span', 'declaration')), function() {
 					return [
 						vcomma(),
-						vsp()
+						// vsp()
+						vbr()
 					]
 				})
 			}),
@@ -436,7 +437,14 @@ type_handler['CallExpression'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
-			vdom('span', 'callee', v_exp_brace(process_ast(ast.callee, ctx))),
+			vdom('span', 'callee', function() {
+				if (ast.callee.type === 'FunctionExpression') {
+					return v_exp_brace(process_ast(ast.callee, ctx))
+				}
+				else {
+					return process_ast(ast.callee, ctx)
+				}
+			}),
 			vdom('span', 'arguments', function() {
 				return vbrace(vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
 					return [vcomma(), vsp()]
@@ -506,19 +514,41 @@ type_handler['NewExpression'] = function(ast, ctx) {
 }
 
 type_handler['ConditionalExpression'] = function(ast, ctx) {
+	// return vdom(
+	// 	'span',
+	// 	ast.type,
+	// 	[
+	// 		vdom('span', 'test', v_exp_brace(process_ast(ast.test, ctx))),
+	// 		vsp(),
+	// 		voperator('?'),
+	// 		vsp(),
+	// 		vdom('span', 'consequent', v_exp_brace(process_ast(ast.consequent, ctx))),
+	// 		vsp(),
+	// 		voperator(':'),
+	// 		vsp(),
+	// 		vdom('span', 'alternate', v_exp_brace(process_ast(ast.alternate, ctx)))
+	// 	]
+	// )
+
 	return vdom(
 		'span',
 		ast.type,
 		[
 			vdom('span', 'test', v_exp_brace(process_ast(ast.test, ctx))),
 			vsp(),
-			voperator('?'),
-			vsp(),
-			vdom('span', 'consequent', v_exp_brace(process_ast(ast.consequent, ctx))),
-			vsp(),
-			voperator(':'),
-			vsp(),
-			vdom('span', 'alternate', v_exp_brace(process_ast(ast.alternate, ctx)))
+			vdom('span', '_align', [
+				vdom('div', '_align', [
+					voperator('?'),
+					vsp(),
+					vdom('span', 'consequent', v_exp_brace(process_ast(ast.consequent, ctx))),
+					// vsp()
+				]),
+				vdom('div', '_align', [
+					voperator(':'),
+					vsp(),
+					vdom('span', 'alternate', v_exp_brace(process_ast(ast.alternate, ctx)))
+				])
+			])
 		]
 	)
 }
