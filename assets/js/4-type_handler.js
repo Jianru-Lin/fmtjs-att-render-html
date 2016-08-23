@@ -331,6 +331,24 @@ type_handler['ForStatement'] = function(ast, ctx) {
 
 type_handler['ForInStatement'] = function(ast, ctx) {
 	console.log(ast)
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('for'),
+			vsp(),
+			// 少见的括号在结构之上的例外
+			vbrace([
+				vdom('span', 'left', process_ast(ast.left, ctx)),
+				vsp(),
+				vkeyword('in'),
+				vsp(),
+				vdom('span', 'right', process_ast(ast.right, ctx))
+			]),
+			vsp(),
+			vdom('span', 'body', process_ast(ast.body, ast))
+		]
+	)
 }
 
 // TODO 参数列表中的逗号间隔未解决 
