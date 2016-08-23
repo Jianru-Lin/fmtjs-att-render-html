@@ -172,6 +172,15 @@ function vbrace(children) {
 	]
 }
 
+// vdom left & right brace for expression
+function v_exp_brace(children) {
+	return [
+		vdom('span', ['left-coll', 'brace', 'exp-brace'], '('),
+		vdom('span', 'collapsable', children),
+		vdom('span', ['right-coll', 'brace', 'exp-brace'], ')')
+	]
+}
+
 // vdom left & right bracket
 function vbracket(children) {
 	return [

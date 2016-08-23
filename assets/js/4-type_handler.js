@@ -70,21 +70,6 @@ type_handler['ExpressionStatement'] = function(ast, ctx) {
 	)
 }
 
-type_handler['CallExpression'] = function(ast, ctx) {
-	return vdom(
-		'span',
-		ast.type,
-		[
-			vdom('span', 'callee', vbrace(process_ast(ast.callee, ctx))),
-			vdom('span', 'arguments', function() {
-				return vbrace(vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
-					return [vcomma(), vsp()]
-				}))
-			})
-		]
-	)
-}
-
 type_handler['BlockStatement'] = function(ast, ctx) {
 	return vdom(
 		'div',
@@ -168,48 +153,6 @@ type_handler['ReturnStatement'] = function(ast, ctx) {
 			vsemi()
 		]
 	)
-}
-
-type_handler['AssignmentExpression'] = function(ast, ctx) {
-	// console.log(ast)
-	return vdom(
-		'span',
-		ast.type,
-		// vbrace([
-		[
-			vdom('span', 'left', process_ast(ast.left, ctx)),
-			vsp(),
-			voperator('='),
-			vsp(),
-			vdom('span', 'right', process_ast(ast.right, ctx))
-		]
-		// ])
-	)
-}
-
-type_handler['MemberExpression'] = function(ast, ctx) {
-	// console.log(ast)
-	if (ast.computed) {
-		return vdom(
-			'span',
-			ast.type,
-			[
-				vdom('span', 'object', process_ast(ast.object, ctx)),
-				vdom('span', 'property', vsqbracket(process_ast(ast.property, ctx)))
-			]
-		)
-	}
-	else {
-		return vdom(
-			'span',
-			ast.type,
-			[
-				vdom('span', 'object', process_ast(ast.object, ctx)),
-				vdom('span', 'dot', '.'),
-				vdom('span', 'property', process_ast(ast.property, ctx))
-			]
-		)
-	}
 }
 
 type_handler['IfStatement'] = function(ast, ctx) {
@@ -488,6 +431,61 @@ type_handler['SwitchCase'] = function(ast, ctx) {
 	)
 }
 
+type_handler['CallExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'callee', v_exp_brace(process_ast(ast.callee, ctx))),
+			vdom('span', 'arguments', function() {
+				return vbrace(vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
+					return [vcomma(), vsp()]
+				}))
+			})
+		]
+	)
+}
+
+type_handler['AssignmentExpression'] = function(ast, ctx) {
+	// console.log(ast)
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'left', v_exp_brace(process_ast(ast.left, ctx))),
+			vsp(),
+			voperator('='),
+			vsp(),
+			vdom('span', 'right', v_exp_brace(process_ast(ast.right, ctx)))
+		]
+	)
+}
+
+type_handler['MemberExpression'] = function(ast, ctx) {
+	// console.log(ast)
+	if (ast.computed) {
+		return vdom(
+			'span',
+			ast.type,
+			[
+				vdom('span', 'object', process_ast(ast.object, ctx)),
+				vdom('span', 'property', vsqbracket(process_ast(ast.property, ctx)))
+			]
+		)
+	}
+	else {
+		return vdom(
+			'span',
+			ast.type,
+			[
+				vdom('span', 'object', process_ast(ast.object, ctx)),
+				vdom('span', 'dot', '.'),
+				vdom('span', 'property', process_ast(ast.property, ctx))
+			]
+		)
+	}
+}
+
 type_handler['NewExpression'] = function(ast, ctx) {
 	// console.log(ast)
 	assert(ast.callee)
@@ -512,15 +510,15 @@ type_handler['ConditionalExpression'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
-			vdom('span', 'test', vbrace(process_ast(ast.test, ctx))),
+			vdom('span', 'test', v_exp_brace(process_ast(ast.test, ctx))),
 			vsp(),
 			voperator('?'),
 			vsp(),
-			vdom('span', 'consequent', vbrace(process_ast(ast.consequent, ctx))),
+			vdom('span', 'consequent', v_exp_brace(process_ast(ast.consequent, ctx))),
 			vsp(),
 			voperator(':'),
 			vsp(),
-			vdom('span', 'alternate', vbrace(process_ast(ast.alternate, ctx)))
+			vdom('span', 'alternate', v_exp_brace(process_ast(ast.alternate, ctx)))
 		]
 	)
 }
@@ -530,11 +528,11 @@ type_handler['BinaryExpression'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
-			vdom('span', 'left', vbrace(process_ast(ast.left, ctx))),
+			vdom('span', 'left', v_exp_brace(process_ast(ast.left, ctx))),
 			vsp(),
 			voperator(ast.operator),
 			vsp(),
-			vdom('span', 'right', vbrace(process_ast(ast.right, ctx))),
+			vdom('span', 'right', v_exp_brace(process_ast(ast.right, ctx))),
 		]
 	)
 }
@@ -548,12 +546,12 @@ type_handler['UpdateExpression'] = function(ast, ctx) {
 				return [
 					voperator(ast.operator),
 					vsp(),
-					vdom('span', 'argument', process_ast(ast.argument, ctx))
+					vdom('span', 'argument', v_exp_brace(process_ast(ast.argument, ctx)))
 				]
 			}
 			else {
 				return [
-					vdom('span', 'argument', process_ast(ast.argument, ctx)),
+					vdom('span', 'argument', v_exp_brace(process_ast(ast.argument, ctx))),
 					vsp(),
 					voperator(ast.operator)
 				]

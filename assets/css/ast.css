@@ -127,6 +127,11 @@
     color: white;
 }
 
+.exp-brace {
+	/*border: solid 1px black;*/
+	color: #c7c7c7;
+}
+
 .left-coll.hover, 
 .right-coll.hover {
 	background: red;
