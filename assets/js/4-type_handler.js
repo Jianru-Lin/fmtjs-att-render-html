@@ -439,6 +439,55 @@ type_handler['ThrowStatement'] = function(ast, ctx) {
 	)
 }
 
+type_handler['SwitchStatement'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('switch'),
+			vsp(),
+			vdom('span', 'discriminant', function() {
+				return vbrace(process_ast(ast.discriminant, ctx))
+			}),
+			vsp(),
+			// 少见的括号在结构之上的例外
+			vbracket(function() {
+				return vdom('span', 'cases', function() {
+					return process_ast_list(ast.cases, ctx).map(wrap_vdom('div', 'case'))
+				})
+			})
+		]
+	)
+}
+
+type_handler['SwitchCase'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			function() {
+				// 一般的 case
+				if (ast.test) {
+					return [
+						vkeyword('case'),
+						vsp(),
+						vdom('span', 'test', process_ast(ast.test, ctx))
+					]
+				}
+				// 没有 test 部分的是 default 分句
+				else {
+					return [
+						vkeyword('default')
+					]
+				}
+			},
+			vcolon(),
+			vsp(),
+			vdom('span', 'consequent', process_ast_list(ast.consequent, ctx))
+		]
+	)
+}
+
 type_handler['NewExpression'] = function(ast, ctx) {
 	// console.log(ast)
 	assert(ast.callee)

@@ -66,6 +66,14 @@
 	vertical-align: top;
 }
 
+.SwitchStatement .cases {
+	vertical-align: top;
+}
+
+.SwitchCase > .consequent {
+	vertical-align: top;
+}
+
 .BlockStatement > .body > .collapsable {
 	outline: solid 1px rgba(197, 197, 197, 0.68);
 	/*margin-top: -1px;*/
