@@ -241,7 +241,74 @@ type_handler['WhileStatement'] = function(ast, ctx) {
 }
 
 type_handler['TryStatement'] = function(ast, ctx) {
+	// console.log(ast)
+	assert(ast.guardedHandlers.length === 0)
+	assert(ast.handlers.length === 0 || ast.handlers.length === 1)
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('try'),
+			vsp(),
+			vdom('span', 'block', process_ast(ast.block, ctx)),
+			function() {
+				if (ast.handler) {
+					return [
+						vsp(),
+						vdom('span', 'handler', process_ast(ast.handler, ctx)) // CatchClause
+					]
+				}
+			},
+			function() {
+				if (ast.finalizer) {
+					return [
+						vsp(),
+						vdom('span', 'finalizer', process_ast(ast.finalizer, ctx))
+					]
+				}
+			}
+		]
+	)
+}
+
+type_handler['CatchClause'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vkeyword('catch'),
+			vsp(),
+			vdom('span', 'param', vbrace(process_ast(ast.param, ctx))),
+			vsp(),
+			vdom('span', 'body', process_ast(ast.body, ctx))
+		]
+	)
+}
+
+type_handler['ForStatement'] = function(ast, ctx) {
 	console.log(ast)
+	return vdom(
+		'div',
+		'ast.type',
+		[
+			vkeyword('for'),
+			vsp(),
+			// 少见的括号在结构之上的例外
+			vbrace([
+				vdom('span', 'init', process_ast(ast.init, ctx)),
+				vsp(),
+				vsemi(),
+				vsp(),
+				vdom('span', 'test', process_ast(ast.test, ctx)),
+				vsp(),
+				vsemi(),
+				vsp(),
+				vdom('span', 'update', process_ast(ast.update, ctx))
+			]),
+			vsp(),
+			vdom('span', 'body', process_ast(ast.body, ctx))
+		]
+	)
 }
 
 // TODO 参数列表中的逗号间隔未解决 
