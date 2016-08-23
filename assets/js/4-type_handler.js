@@ -599,6 +599,18 @@ type_handler['SequenceExpression'] = function(ast, ctx) {
 	)
 }
 
+type_handler['ArrayExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		vdom('span', 'elements', vsqbracket(function() {
+			return vjoin(process_ast_list(ast.elements, ctx).map(wrap_vdom('span', 'element')), function() {
+				return [vcomma(), vsp()]
+			})
+		}))
+	)
+}
+
 type_handler['ThisExpression'] = function(ast, ctx) {
 	return vdom('span', [ast.type, 'keyword'], 'this')
 }
