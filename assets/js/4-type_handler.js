@@ -604,10 +604,44 @@ type_handler['ArrayExpression'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		vdom('span', 'elements', vsqbracket(function() {
+			if (!ast.elements || ast.elements.length < 1) return
 			return vjoin(process_ast_list(ast.elements, ctx).map(wrap_vdom('span', 'element')), function() {
 				return [vcomma(), vsp()]
 			})
 		}))
+	)
+}
+
+type_handler['ObjectExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		vdom('span', 'properties', vbracket(function() {
+			if (!ast.properties || ast.properties.length < 1) return
+			return process_ast_list(ast.properties, ctx).map(wrap_vdom('div', 'property'))
+		}))
+	)
+}
+
+type_handler['Property'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		function() {
+			return [
+				function() {
+					if (ast.computed) {
+						return vdom('span', 'key', vsqbracket(process_ast(ast.key, ctx)))
+					}
+					else {
+						return vdom('span', 'key', process_ast(ast.key, ctx))
+					}
+				},
+				vcolon(),
+				vsp(),
+				vdom('span', 'value', process_ast(ast.value, ctx))
+			]
+		}
 	)
 }
 
