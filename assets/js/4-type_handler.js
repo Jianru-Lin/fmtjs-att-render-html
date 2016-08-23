@@ -560,6 +560,45 @@ type_handler['UpdateExpression'] = function(ast, ctx) {
 	)
 }
 
+type_handler['LogicalExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'left', v_exp_brace(process_ast(ast.left, ctx))),
+			vsp(),
+			voperator(ast.operator),
+			vsp(),
+			vdom('span', 'right', v_exp_brace(process_ast(ast.right, ctx))),			
+		]
+	)
+}
+
+type_handler['UnaryExpression'] = function(ast, ctx) {
+	assert(ast.prefix === true)
+	return vdom(
+		'span',
+		ast.type,
+		[
+			voperator(ast.operator),
+			vsp(),
+			vdom('span', 'argument', v_exp_brace(process_ast(ast.argument, ctx)))
+		]
+	)
+}
+
+type_handler['SequenceExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		vdom('span', 'expressions', function() {
+			return vjoin(process_ast_list(ast.expressions, ctx).map(v_exp_brace), function() {
+				return [voperator(','), vsp()]
+			})
+		})
+	)
+}
+
 type_handler['ThisExpression'] = function(ast, ctx) {
 	return vdom('span', [ast.type, 'keyword'], 'this')
 }
