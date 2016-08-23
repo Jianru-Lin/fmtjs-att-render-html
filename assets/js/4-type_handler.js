@@ -391,6 +391,26 @@ type_handler['ContinueStatement'] = function(ast, ctx) {
 	)
 }
 
+type_handler['BreakStatement'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('break'),
+			function() {
+				if (ast.label) {
+					return [
+						vsp(),
+						vdom('span', 'label', process_ast(ast.label, ctx))
+					]
+				}
+			},
+			vsp(),
+			vsemi()
+		]
+	)
+}
+
 type_handler['LabeledStatement'] = function(ast, ctx) {
 	// console.log(ast)
 	return vdom(
@@ -405,7 +425,20 @@ type_handler['LabeledStatement'] = function(ast, ctx) {
 	)
 }
 
-// TODO 参数列表中的逗号间隔未解决 
+type_handler['ThrowStatement'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('throw'),
+			vsp(),
+			vdom('span', 'argument', process_ast(ast.argument, ctx)),
+			vsp(),
+			vsemi()
+		]
+	)
+}
+
 type_handler['NewExpression'] = function(ast, ctx) {
 	// console.log(ast)
 	assert(ast.callee)
