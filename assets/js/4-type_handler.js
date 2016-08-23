@@ -93,7 +93,9 @@ type_handler['BlockStatement'] = function(ast, ctx) {
 	)
 }
 
-type_handler['VariableDeclaration'] = function(ast, ctx) {
+// ccfg = {nosemi: true|false} 可配置是否生成末尾分号
+// ForStatement 和 ForInStatement 会使用这个配置
+type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
 	// console.log(ast)
 	assert(ast.kind === 'var' || ast.kind === 'const')
 	return vdom(
@@ -110,8 +112,14 @@ type_handler['VariableDeclaration'] = function(ast, ctx) {
 					]
 				})
 			}),
-			vsp(),
-			vsemi()
+			function() {
+				if (ccfg && ccfg.nosemi) {
+					return undefined
+				}
+				else {
+					return[vsp(), vsemi()]
+				}
+			}
 		]
 	)
 }
@@ -299,13 +307,17 @@ type_handler['ForStatement'] = function(ast, ctx) {
 			vsp(),
 			// 少见的括号在结构之上的例外
 			vbrace([
-				vdom('span', 'init', process_ast(ast.init, ctx)),
-				function() {
-					// VariableDeclaration 会自己生成分号，因此我们不需要生成
-					if (ast.init && ast.init.type !== 'VariableDeclaration') {
-						return [vsp(), vsemi()]
+				vdom('span', 'init', function() {
+					// 命令 VariableDeclaration 不要生成末尾分号，因为这里会生成
+					if (ast.init && ast.init.type === 'VariableDeclaration') {
+						return process_ast(ast.init, ctx, {nosemi: true})
 					}
-				},
+					else {
+						return process_ast(ast.init, ctx)
+					}
+				}),
+				vsp(), 
+				vsemi(),
 				function() {
 					if (ast.test) {
 						return [
@@ -339,7 +351,15 @@ type_handler['ForInStatement'] = function(ast, ctx) {
 			vsp(),
 			// 少见的括号在结构之上的例外
 			vbrace([
-				vdom('span', 'left', process_ast(ast.left, ctx)),
+				vdom('span', 'left', function() {
+					// 命令 VariableDeclaration 不要生成末尾分号，因为这里会生成
+					if (ast.left && ast.left.type === 'VariableDeclaration') {
+						return process_ast(ast.left, ctx, {nosemi: true})
+					}
+					else {
+						return process_ast(ast.left, ctx)
+					}
+				}),
 				vsp(),
 				vkeyword('in'),
 				vsp(),
@@ -417,11 +437,38 @@ function process_ast_list(ast_list, ctx) {
 	})
 }
 
-function process_ast(ast, ctx) {
+// 对指定的 AST 节点进行处理
+// 参数：
+// - ast: 目标 AST 节点（必填）
+// - ctx: 上下文对象（必填），层层传递，自动进行节点栈追逐
+// - ccfg: Child Config 子节点配置（必填）,这一参数只会传给直接下级节点，不会层层传递
+function process_ast(ast, ctx, ccfg) {
 	assert(ctx && true)
+	// 必须要有 stack 属性，用于记录层次栈
+	ctx.stack = ctx.stack || []
+	// 支持 parent 方法，这样可以用于查询上级节点
+	ctx.parent = ctx.parent || function() {
+		var st = this.stack
+		var len = st.length
+		if (len >= 2) {
+			return st[len-2]
+		}
+		else {
+			return null
+		}
+	}
+	// 调用 type_handler 上对应的处理函数
 	if (type_handler[ast.type]) {
 		log('info', 'processing type' + ast.type)
-		return type_handler[ast.type](ast, ctx)
+		// 调用前把当前节点入栈
+		ctx.stack.push(ast)
+		try {
+			return type_handler[ast.type](ast, ctx, ccfg)
+		}
+		finally {
+			// 调用后弹出当前节点
+			ctx.stack.pop()
+		}
 	}
 	else {
 		log('warning', 'unknown type: ' + ast.type)
