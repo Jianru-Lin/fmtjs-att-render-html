@@ -153,6 +153,11 @@ function vcomma() {
 	return vdom('span', 'comma', ',')
 }
 
+// vdom colon
+function vcolon() {
+	return vdom('span', 'colon', ':')
+}
+
 // vdom left & right brace
 function vbrace(children) {
 	return [

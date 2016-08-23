@@ -371,6 +371,40 @@ type_handler['ForInStatement'] = function(ast, ctx) {
 	)
 }
 
+type_handler['ContinueStatement'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('continue'),
+			function() {
+				if (ast.label) {
+					return [
+						vsp(),
+						vdom('span', 'label', process_ast(ast.label, ctx))
+					]
+				}
+			},
+			vsp(),
+			vsemi()
+		]
+	)
+}
+
+type_handler['LabeledStatement'] = function(ast, ctx) {
+	// console.log(ast)
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vdom('span', 'label', process_ast(ast.label, ctx)),
+			vcolon(),
+			vsp(),
+			vdom('span', 'body', process_ast(ast.body, ctx))
+		]
+	)
+}
+
 // TODO 参数列表中的逗号间隔未解决 
 type_handler['NewExpression'] = function(ast, ctx) {
 	// console.log(ast)

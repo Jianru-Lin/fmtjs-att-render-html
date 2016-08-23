@@ -10,6 +10,7 @@ window.onload = function() {
 	}
 	catch (err) {
 		log('error', err.toString())
+		debugger
 		throw err
 	}
 
