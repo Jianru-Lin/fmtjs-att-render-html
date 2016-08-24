@@ -471,6 +471,7 @@ type_handler['CallExpression'] = function(ast, ctx) {
 					return process_ast(ast.callee, ctx)
 				}
 			}),
+			vsp(),
 			vdom('span', 'arguments', function() {
 				return vbrace(vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
 					return [vcomma(), vsp()]
