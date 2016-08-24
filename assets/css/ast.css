@@ -121,11 +121,14 @@
 }*/
 
 .collapsable-switcher {
-	background: red;
-	border: solid 1px black;
-	color: white;
-	border-radius: 2px;
-	cursor: pointer;
+    background: #F2777A;
+    color: white;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 8px;
+    vertical-align: top;
+    padding: 4px;
+    margin: 0 2px;
 }
 
 .collapsable-switcher:hover {
@@ -143,38 +146,38 @@
 /* Syntax Highlight */
 
 .keyword {
-	color: blue;
+	color: #CC99CC;
 }
 
 .keyword:hover {
-	background: gray;
+	background: #F99157;
 }
 
 .identifier {
-	color: red;
+	color: #F2777A;
 }
 
 .identifier:hover {
-	background: whitesmoke;
+	background: #515151;
 }
 
 .operator {
-	color: green;
+	color: #66CCCC;
 }
 
 .operator:hover {
-	background: green;
-	color: white;
+/*	background: green;
+	color: white;*/
 }
 
 .Literal,
 .TemplateLiteral {
-	color: gray;
+	color: #F99157;
 }
 
 .Literal:hover,
 .TemplateLiteral:hover {
-    background: #d8d8d8;
+    background: #515151;
 }
 
 .template-expression > .prefix,
@@ -192,13 +195,13 @@
 
 .left-coll.hover, 
 .right-coll.hover {
-	background: red;
+	background: #515151;
 	color: white;
 	cursor: pointer;
 }
 
 .collapsable.hover {
-	background: #ffe7e7 !important;
+	background: #515151 !important;
 }
 
 .collapsable.hidden {
