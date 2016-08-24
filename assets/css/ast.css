@@ -120,6 +120,26 @@
 	content: none;
 }*/
 
+.collapsable-switcher {
+	background: red;
+	border: solid 1px black;
+	color: white;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.collapsable-switcher:hover {
+    background: #ff8888 !important;
+}
+
+/*span.collapsable-switcher:hover {
+	background: #ff8888 !important;
+}*/
+
+.collapsable-switcher.hidden {
+	display: none !important;
+}
+
 /* Syntax Highlight */
 
 .keyword {
@@ -157,8 +177,11 @@
 }
 
 .exp-brace {
-	/*border: solid 1px black;*/
 	color: #c7c7c7;
+}
+
+.exp-brace:not(.brace) {
+	color: black;
 }
 
 .left-coll.hover, 

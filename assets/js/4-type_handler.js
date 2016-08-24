@@ -90,22 +90,23 @@ type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
 			vdom('span', ['kind', ast.kind], vkeyword(ast.kind)),
 			vsp(),
 			vdom('span', 'declarations', function() {
-				return vjoin(process_ast_list(ast.declarations, ctx).map(wrap_vdom('span', 'declaration')), function() {
-					return [
-						vcomma(),
-						// vsp()
-						vbr()
-					]
+				return process_ast_list(ast.declarations, ctx).map(function(declaration, i) {
+					return vdom('div', 'declaration', function() {
+						return [
+							declaration,
+							function() {
+								if (i === (ast.declarations.length - 1)) {
+									if (ccfg && ccfg.nosemi) return undefined
+									return [vsp(), vsemi()]
+								}
+								else {
+									return [vcomma()]
+								}
+							}
+						]
+					})
 				})
-			}),
-			function() {
-				if (ccfg && ccfg.nosemi) {
-					return undefined
-				}
-				else {
-					return[vsp(), vsemi()]
-				}
-			}
+			})
 		]
 	)
 }
@@ -460,11 +461,13 @@ type_handler['AssignmentExpression'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
-			vdom('span', 'left', v_exp_brace(process_ast(ast.left, ctx))),
+			// vdom('span', 'left', v_exp_brace(process_ast(ast.left, ctx))),
+			vdom('span', 'left', process_ast(ast.left, ctx)),
 			vsp(),
 			voperator('='),
 			vsp(),
-			vdom('span', 'right', v_exp_brace(process_ast(ast.right, ctx)))
+			// vdom('span', 'right', v_exp_brace(process_ast(ast.right, ctx)))
+			vdom('span', 'right', process_ast(ast.right, ctx))
 		]
 	)
 }
@@ -507,7 +510,11 @@ type_handler['NewExpression'] = function(ast, ctx) {
 			vdom('span', 'callee', process_ast(ast.callee, ctx)),
 			vsp(),
 			vdom('span', 'arguments', [
-				vbrace(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')))
+				vbrace(function() {
+					return vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
+						return [vcomma(), vsp()]
+					})
+				})
 			]),
 		]
 	)

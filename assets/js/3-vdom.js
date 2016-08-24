@@ -172,7 +172,8 @@ function vcolon() {
 function vbrace(children) {
 	return [
 		vdom('span', ['left-coll', 'brace'], '('),
-		vdom('span', 'collapsable', children),
+		vdom('span', ['collapsable', 'brace'], children),
+		vdom('span', ['collapsable-switcher', 'hidden'], '...'),
 		vdom('span', ['right-coll', 'brace'], ')')
 	]
 }
@@ -181,7 +182,8 @@ function vbrace(children) {
 function v_exp_brace(children) {
 	return [
 		vdom('span', ['left-coll', 'brace', 'exp-brace'], '('),
-		vdom('span', 'collapsable', children),
+		vdom('span', ['collapsable', 'exp-brace'], children),
+		vdom('span', ['collapsable-switcher', 'exp-brace', 'hidden'], '...'),
 		vdom('span', ['right-coll', 'brace', 'exp-brace'], ')')
 	]
 }
@@ -190,7 +192,8 @@ function v_exp_brace(children) {
 function vbracket(children) {
 	return [
 		vdom('span', ['left-coll', 'bracket'], '{'),
-		vdom('span', 'collapsable', children),
+		vdom('span', ['collapsable', 'bracket'], children),
+		vdom('span', ['collapsable-switcher', 'bracket', 'hidden'], '...'),
 		vdom('span', ['right-coll', 'bracket'], '}')
 	]
 }
@@ -199,7 +202,8 @@ function vbracket(children) {
 function vsqbracket(children) {
 	return [
 		vdom('span', ['left-coll', 'square-bracket'], '['),
-		vdom('span', 'collapsable', children),
+		vdom('span', ['collapsable', 'square-bracket'], children),
+		vdom('span', ['collapsable-switcher', 'square-bracket', 'hidden'], '...'),
 		vdom('span', ['right-coll', 'square-bracket'], ']')
 	]
 }

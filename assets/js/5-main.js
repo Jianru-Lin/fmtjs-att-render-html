@@ -17,32 +17,76 @@ window.onload = function() {
 	// 可折叠特性实现
 	$('#content').on('mouseenter', '.left-coll', function() {
 		$this = $(this)
-		$this.addClass('hover').next().addClass('hover').next().addClass('hover')
+		$this.addClass('hover')
+		$this.nextAll('.collapsable').addClass('hover')
+		$this.nextAll('.right-coll').addClass('hover')
 	})
 
 	$('#content').on('mouseenter', '.right-coll', function() {
 		$this = $(this)
-		$this.addClass('hover').prev().addClass('hover').prev().addClass('hover')
+		$this.addClass('hover')
+		$this.prevAll('.collapsable').addClass('hover')
+		$this.prevAll('.left-coll').addClass('hover')
 	})
 
 	$('#content').on('mouseleave', '.left-coll', function() {
 		$this = $(this)
-		$this.removeClass('hover').next().removeClass('hover').next().removeClass('hover')
+		$this.removeClass('hover')
+		$this.nextAll('.collapsable').removeClass('hover')
+		$this.nextAll('.right-coll').removeClass('hover')
 	})
 
 	$('#content').on('mouseleave', '.right-coll', function() {
 		$this = $(this)
-		$this.removeClass('hover').prev().removeClass('hover').prev().removeClass('hover')
+		$this.removeClass('hover')
+		$this.prevAll('.collapsable').removeClass('hover')
+		$this.prevAll('.left-coll').removeClass('hover')
 	})
 
 	$('#content').on('click', '.left-coll', function() {
 		$this = $(this)
-		$this.next().toggleClass('hidden')
+		toggle($this.nextAll('.collapsable'))
 	})
 
 	$('#content').on('click', '.right-coll', function() {
 		$this = $(this)
-		$this.prev().toggleClass('hidden')
+		toggle($this.prevAll('.collapsable'))
 	})
+
+	$('#content').on('click', '.collapsable-switcher', function() {
+		$this = $(this)
+		expand($this.prevAll('.collapsable'))
+	})
+
+	// 按钮功能
+	
+	$('button#col-all').click(function() {
+		$('.collapsable.bracket').addClass('hidden')
+		$('.collapsable-switcher.bracket').removeClass('hidden')
+	})
+	
+	$('button#exp-all').click(function() {
+		$('.collapsable-switcher.bracket').addClass('hidden')
+		$('.collapsable.bracket').removeClass('hidden')
+	})
+
+	function toggle($collapsable) {
+		if ($collapsable.hasClass('hidden')) {
+			expand($collapsable)
+		}
+		else {
+			collapse($collapsable)
+		}
+	}
+
+	function collapse($collapsable) {
+		$collapsable.addClass('hidden')
+		$collapsable.nextAll('.collapsable-switcher').removeClass('hidden')
+	}
+
+	function expand($collapsable) {
+		$collapsable.removeClass('hidden')
+		$collapsable.nextAll('.collapsable-switcher').addClass('hidden')
+	}
 }
 // })
