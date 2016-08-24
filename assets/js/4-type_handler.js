@@ -63,7 +63,15 @@ type_handler['ExpressionStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
-			vdom('span', 'expression', process_ast(ast.expression, ctx)),
+			vdom('span', 'expression', function() {
+				// 如果是函数表达式的话，我们要给它补上括号，其他则没必要
+				if (ast.expression.type === 'FunctionExpression') {
+					return v_exp_brace(process_ast(ast.expression, ctx))
+				}
+				else {
+					return process_ast(ast.expression, ctx)
+				}
+			}),
 			vsp(),
 			vsemi()
 		]
