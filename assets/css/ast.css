@@ -150,7 +150,7 @@
 }
 
 .keyword:hover {
-	background: #F99157;
+	background: #515151;
 }
 
 .identifier {
@@ -166,8 +166,7 @@
 }
 
 .operator:hover {
-/*	background: green;
-	color: white;*/
+	background: #515151;
 }
 
 .Literal,
@@ -190,7 +189,7 @@
 }
 
 .exp-brace:not(.brace) {
-	color: black;
+	color: #c7c7c7;
 }
 
 .left-coll.hover, 
