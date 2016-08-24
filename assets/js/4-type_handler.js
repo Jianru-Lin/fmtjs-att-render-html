@@ -197,6 +197,23 @@ type_handler['WhileStatement'] = function(ast, ctx) {
 	)
 }
 
+type_handler['DoWhileStatement'] = function(ast, ctx) {
+	console.log(ast)
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('do'),
+			vsp(),
+			vdom('span', 'body', process_ast(ast.body, ctx)),
+			vsp(),
+			vkeyword('while'),
+			vsp(),
+			vdom('span', 'test', vbrace(process_ast(ast.test, ctx)))
+		]
+	)
+}
+
 type_handler['TryStatement'] = function(ast, ctx) {
 	// console.log(ast)
 	assert(ast.guardedHandlers.length === 0)

@@ -7,6 +7,9 @@ window.onload = function() {
 		// $('#vdom').text(JSON.stringify(vdom_item, null, 4))
 		var dom = vdom_item.toDom()
 		$('#content').append(dom)
+		setTimeout(function() {
+			$('#col-all')[0].click()
+		}, 0)
 	}
 	catch (err) {
 		log('error', err.toString())
