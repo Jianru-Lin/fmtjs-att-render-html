@@ -167,13 +167,19 @@
 	color: white;
 }
 
-.Literal {
+.Literal,
+.TemplateLiteral {
 	color: gray;
 }
 
-.Literal:hover {
-    background: gray;
-    color: white;
+.Literal:hover,
+.TemplateLiteral:hover {
+    background: #d8d8d8;
+}
+
+.template-expression > .prefix,
+.template-expression > .postfix {
+	color: green;
 }
 
 .exp-brace {

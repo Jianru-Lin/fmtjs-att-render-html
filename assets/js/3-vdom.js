@@ -208,6 +208,16 @@ function vsqbracket(children) {
 	]
 }
 
+// vdom template expression
+function v_texp(children) {
+	return vdom('span', 'template-expression', [
+		vdom('span', ['left-coll', 'prefix'], '${'),
+		vdom('span', ['collapsable', 'exp'], children),
+		vdom('span', ['collapsable-switcher', 'square-bracket', 'hidden'], '...'),
+		vdom('span', ['right-coll', 'postfix'], '}')
+	])
+}
+
 // join
 // 限制：children 必须是数组，而且其中每个 child 元素就是代表最终的一个 VDom
 function vjoin(children, j_child) {

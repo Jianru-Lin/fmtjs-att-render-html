@@ -198,7 +198,7 @@ type_handler['WhileStatement'] = function(ast, ctx) {
 }
 
 type_handler['DoWhileStatement'] = function(ast, ctx) {
-	console.log(ast)
+	// console.log(ast)
 	return vdom(
 		'div',
 		ast.type,
@@ -705,6 +705,48 @@ type_handler['ThisExpression'] = function(ast, ctx) {
 
 type_handler['Identifier'] = function(ast, ctx) {
 	return vdom('span', [ast.type, 'identifier'], ast.name)
+}
+
+type_handler['TemplateElement'] = function(ast, ctx) {
+	// assert(ast.value.raw === ast.value.cooked)
+	return vdom(
+		'span',
+		ast.type,
+		ast.value.raw // 这里没有使用 ast.value.cooked，以后研究清楚后再重新考虑下
+	)
+}
+
+type_handler['TemplateLiteral'] = function(ast, ctx) {
+	// console.log(ast)
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', '', '`'),
+			function() {
+				var children = []
+				var quasis = ast.quasis
+				var expressions = ast.expressions
+				// 即使对于空模版字符串 `` 下面的条件也成立
+				// 而且对于 `${e}` 这样只有表达式的空模版字符串也是成立的
+				assert(quasis.length === (expressions.length + 1))
+				for (var i = 0; i < quasis.length; ++i) {
+					var q = quasis[i]
+					var e = expressions[i]
+					// 注意包装在 q 元素中
+					children.push(vdom('span', 'q', process_ast(q, ctx)))
+					// 当 q 是尾元素时，e 必然不存在
+					if (q.tail === true) assert(e === undefined)
+					if (e) {
+						// 注意包装在 e 元素中
+						children.push(vdom('span', 'e', v_texp(process_ast(e, ctx))))
+					}
+				}
+				return children
+			},
+			vdom('span', '', '`')
+		]
+	)
 }
 
 type_handler['Literal'] = function(ast, ctx) {
