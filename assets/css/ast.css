@@ -178,10 +178,14 @@
 	background: #515151;
 }
 
+/*.MemberExpression > .property > .left-coll.square-bracket,
+.MemberExpression > .property > .right-coll.square-bracket,*/
 .operator {
 	color: #66CCCC;
 }
 
+/*.MemberExpression > .property > .left-coll.square-bracket:hover,
+.MemberExpression > .property > .right-coll.square-bracket:hover,*/
 .operator:hover {
 	background: #515151;
 }
