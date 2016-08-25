@@ -91,11 +91,11 @@
 }
 
 .ObjectExpression > .properties > .collapsable {
-	outline: solid 1px rgba(248,144,87,0.2);
-    margin-top: -1em;
-    background: rgba(244,142,86,0.05);
+	margin-top: -1em;
+    background: rgba(102, 176, 204, 0.2);
     vertical-align: top;
     padding: 1em;
+    border-radius: 4px;
 }
 
 .ObjectExpression > .properties > .collapsable:empty {
@@ -105,7 +105,8 @@
 .ConditionalExpression,
 .SwitchStatement > .collapsable,
 .BlockStatement > .body > .collapsable {
-	outline: solid 1px rgba(197, 197, 197, 0.2);
+	/*outline: solid 1px rgba(197, 197, 197, 0.2);*/
+	border-radius: 4px;
 	margin-top: -1em;
     background: rgba(162, 162, 162, 0.05);
     vertical-align: top;
@@ -113,8 +114,19 @@
 }
 
 .CallExpression > .callee > .Identifier ,
-.FunctionExpression > .name > .Identifier {
+.FunctionExpression > .name > .Identifier,
+.FunctionDeclaration > .id > .Identifier {
 	color: #6699CC !important;
+}
+
+/*对象中嵌套函数的时候，把色彩重置一下*/
+
+.ObjectExpression .BlockStatement > .body > .collapsable {
+	background: #393939;
+}
+
+.ObjectExpression .BlockStatement .BlockStatement > .body > .collapsable {
+	background: rgba(162, 162, 162, 0.05);
 }
 
 /*.NewExpression > .arguments > .argument:after {
