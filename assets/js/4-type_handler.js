@@ -10,6 +10,10 @@ type_handler['Program'] = function(ast, ctx) {
 	)
 }
 
+type_handler['EmptyStatement'] = function(ast, ctx) {
+	// ignore
+}
+
 type_handler['FunctionDeclaration'] = function(ast, ctx) {
 	// console.log(ast)
 	return vdom(
@@ -278,8 +282,10 @@ type_handler['ForStatement'] = function(ast, ctx) {
 			// 少见的括号在结构之上的例外
 			vbrace([
 				vdom('span', 'init', function() {
+					// init 部分为 null 是可能的
+					if (!ast.init) return
 					// 命令 VariableDeclaration 不要生成末尾分号，因为这里会生成
-					if (ast.init && ast.init.type === 'VariableDeclaration') {
+					if (ast.init.type === 'VariableDeclaration') {
 						return process_ast(ast.init, ctx, {nosemi: true})
 					}
 					else {
@@ -300,7 +306,7 @@ type_handler['ForStatement'] = function(ast, ctx) {
 				vsemi(),
 				vsp(),
 				function() {
-					if (ast.test) {
+					if (ast.update) {
 						return vdom('span', 'update', process_ast(ast.update, ctx))
 					}
 				}
@@ -802,6 +808,7 @@ function process_ast_list(ast_list, ctx) {
 // - ctx: 上下文对象（必填），层层传递，自动进行节点栈追逐
 // - ccfg: Child Config 子节点配置（必填）,这一参数只会传给直接下级节点，不会层层传递
 function process_ast(ast, ctx, ccfg) {
+	assert(ast && true)
 	assert(ctx && true)
 	// 必须要有 stack 属性，用于记录层次栈
 	ctx.stack = ctx.stack || []
