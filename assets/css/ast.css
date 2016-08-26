@@ -98,7 +98,12 @@
     border-radius: 4px;
 }
 
-.ObjectExpression > .properties > .collapsable:empty {
+.BlockStatement > .body > .collapsable:empty,
+.BlockStatement > .body > .collapsable:empty + .collapsable-switcher,
+.ArrayExpression > .elements > .collapsable:empty,
+.ArrayExpression > .elements > .collapsable:empty + .collapsable-switcher,
+.ObjectExpression > .properties > .collapsable:empty,
+.ObjectExpression > .properties > .collapsable:empty + .collapsable-switcher {
 	display: none !important; /* 空对象不显示 */
 }
 
