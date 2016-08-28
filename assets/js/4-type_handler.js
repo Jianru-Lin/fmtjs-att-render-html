@@ -14,6 +14,18 @@ type_handler['EmptyStatement'] = function(ast, ctx) {
 	// ignore
 }
 
+type_handler['DebuggerStatement'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('debugger'),
+			vsp(),
+			vsemi()
+		]
+	)
+}
+
 type_handler['FunctionDeclaration'] = function(ast, ctx) {
 	// console.log(ast)
 	return vdom(
