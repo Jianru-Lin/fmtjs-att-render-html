@@ -330,7 +330,7 @@ type_handler['ForStatement'] = function(ast, ctx) {
 }
 
 type_handler['ForInStatement'] = function(ast, ctx) {
-	console.log(ast)
+	// console.log(ast)
 	return vdom(
 		'div',
 		ast.type,

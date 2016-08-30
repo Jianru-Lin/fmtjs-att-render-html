@@ -6,6 +6,11 @@ html, body {
 	background: #2D2D2D;
 }
 
+body {
+	padding-top: 3em;
+	padding-bottom: 2em;
+}
+
 a:hover,
 a:active,
 a:visited {
@@ -49,8 +54,6 @@ button:focus {
 	/*overflow: auto;*/
     /*max-height: 400px;*/
 	background: #2D2D2D;
-	margin-top: 2em;
-	margin-bottom: 2em;
 }
 
 #control {
