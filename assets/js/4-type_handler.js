@@ -74,6 +74,44 @@ type_handler['FunctionExpression'] = function(ast, ctx) {
 	)
 }
 
+type_handler['ArrowFunctionExpression'] = function(ast, ctx) {
+	assert(ast.id === null)
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vdom('span', 'params', function() {
+				return vbrace(vjoin(process_ast_list(ast.params, ctx).map(wrap_vdom('span', 'params')), function() {
+					return [vcomma(), vsp()]
+				}))
+			}),
+			vsp(),
+			voperator('=>'),
+			vsp(),
+			vdom('span', 'body', function() {
+				var body = ast.body
+				if (body.type === 'ObjectExpression') {
+					return v_exp_brace(process_ast(body, ctx))
+				}
+				else {
+					return [process_ast(ast.body, ctx)]
+				}
+			})
+		]
+	)
+}
+
+type_handler['RestElement'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vkeyword('...'),
+			vdom('span', 'argument', process_ast(ast.argument, ctx))
+		]
+	)
+}
+
 type_handler['ExpressionStatement'] = function(ast, ctx) {
 	return vdom(
 		'div',
@@ -786,6 +824,7 @@ type_handler['Literal'] = function(ast, ctx) {
 	var value_type = typeof value
 	switch (value_type) {
 		case 'number':
+			// 全都会转为 10 进制显示
 			return vdom('span', [ast.type, value_type], value.toString())
 		case 'boolean':
 			return vdom('span', [ast.type, value_type], value.toString())

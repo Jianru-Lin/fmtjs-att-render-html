@@ -40,6 +40,7 @@ button:focus {
 
 #title h1 {
 	margin: 0;
+	text-shadow: 1px 1px black;
 }
 
 #ast, #vdom, #content, #log {
