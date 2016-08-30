@@ -6,61 +6,6 @@
 	margin-bottom: 1.5em;
 }
 
-/* fill braket... */
-
-/*.ExpressionStatement:after {
-	content: ";";
-}
-
-.CallExpression > .callee:before {
-	content: "(";
-}
-
-.CallExpression > .callee:after {
-	content: ")";
-}
-
-.CallExpression > .arguments:before {
-	content: "(";
-}
-
-.CallExpression > .arguments:after {
-	content: ")";
-}
-
-.CallExpression > .arguments > .argument:after {
-	content: ", ";
-}
-
-.CallExpression > .arguments > .argument:last-child:after {
-	content: none;
-}
-
-.FunctionExpression > .name:before,
-.FunctionDeclaration > .name:before {
-	content: " ";
-}
-
-.FunctionExpression > .params:before,
-.FunctionDeclaration > .params:before {
-	content: " (";
-}
-
-.FunctionExpression > .params:after,
-.FunctionDeclaration > .params:after {
-	content: ") ";
-}
-
-.FunctionExpression > .params > .param:after,
-.FunctionDeclaration > .params > .param:after {
-	content: ", ";
-}
-
-.FunctionExpression > .params > .param:last-child:after,
-.FunctionDeclaration > .params > .param:last-child:after {
-	content: none;
-}*/
-
 .collapsable {
 	vertical-align: top;
 }
@@ -134,14 +79,6 @@
 	background: rgba(162, 162, 162, 0.05);
 }
 
-/*.NewExpression > .arguments > .argument:after {
-	content: ", ";
-}
-
-.NewExpression > .arguments > .argument:last-child:after {
-	content: none;
-}*/
-
 .collapsable-switcher {
     background: #F2777A;
     color: white;
@@ -156,10 +93,6 @@
 .collapsable-switcher:hover {
     background: #ff8888 !important;
 }
-
-/*span.collapsable-switcher:hover {
-	background: #ff8888 !important;
-}*/
 
 .collapsable-switcher.hidden {
 	display: none !important;

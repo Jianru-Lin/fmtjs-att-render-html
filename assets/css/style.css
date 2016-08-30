@@ -27,7 +27,6 @@ button {
 }
 
 button:focus {
-	/*outline-color: #007dc7;*/
 	outline: none;
 }
 
@@ -36,7 +35,6 @@ button:focus {
 	padding: 1em;
 	background: whitesmoke;
 	color: #171717;
-	/*font-size: 11px;*/
 }
 
 #ast {
@@ -49,10 +47,8 @@ button:focus {
 }
 
 #content {
+	margin-top: 0.5em;
 	color: #CCCCCC;
-	/*font-size: 16px;*/
-	/*overflow: auto;*/
-    /*max-height: 400px;*/
 	background: #2D2D2D;
 }
 
