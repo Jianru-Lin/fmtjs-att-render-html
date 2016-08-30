@@ -30,6 +30,18 @@ button:focus {
 	outline: none;
 }
 
+#title {
+    margin-top: 1em;
+    color: white;
+    padding-bottom: 0;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#title h1 {
+	margin: 0;
+}
+
 #ast, #vdom, #content, #log {
 	white-space: pre;
 	padding: 1em;
@@ -47,7 +59,6 @@ button:focus {
 }
 
 #content {
-	margin-top: 0.5em;
 	color: #CCCCCC;
 	background: #2D2D2D;
 }

@@ -1,3 +1,4 @@
+var pkg = require('./package.json')
 var jade = require('jade')
 var assets = require('./lib/assets')
 
@@ -9,6 +10,7 @@ function render(att, options) {
 	var fn = jade.compile(a.template, {})
 	return fn({
 		filename: filename,
+		version: pkg.version,
 		style: a.css,
 		script: a.js,
 		init: gen_init_code(att)

@@ -9,11 +9,13 @@ html
 			span.logo
 				a(href="https://github.com/Jianru-Lin/lambda-view",target="_blank")
 					|lambda-view 
-					span.version v1.0.x
+					span.version= version
 			span.buttons
 				button#exp-all 完全展开
 				button#col-all 完全折叠
 		#log
+		#title
+			h1= filename
 		#content
 		#vdom
 		#ast
