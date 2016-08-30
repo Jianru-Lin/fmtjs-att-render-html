@@ -106,7 +106,7 @@ type_handler['BlockStatement'] = function(ast, ctx) {
 // ForStatement 和 ForInStatement 会使用这个配置
 type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
 	// console.log(ast)
-	assert(ast.kind === 'var' || ast.kind === 'const')
+	assert(ast.kind === 'var' || ast.kind === 'const' || ast.kind === 'let')
 	return vdom(
 		'div',
 		ast.type,
