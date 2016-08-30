@@ -6,12 +6,32 @@ html, body {
 	background: #2D2D2D;
 }
 
+a:hover,
+a:active,
+a:visited {
+	color: inherit;
+}
+
+button {
+	padding: 0.5em 1em;
+    font-family: inherit;
+    font-size: inherit;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+button:focus {
+	/*outline-color: #007dc7;*/
+	outline: none;
+}
+
 #ast, #vdom, #content, #log {
 	white-space: pre;
 	padding: 1em;
 	background: whitesmoke;
 	color: #171717;
-	font-size: 11px;
+	/*font-size: 11px;*/
 }
 
 #ast {
@@ -25,10 +45,79 @@ html, body {
 
 #content {
 	color: #CCCCCC;
-	font-size: 16px;
+	/*font-size: 16px;*/
 	/*overflow: auto;*/
     /*max-height: 400px;*/
 	background: #2D2D2D;
+	margin-top: 2em;
+	margin-bottom: 2em;
+}
+
+#control {
+	display: flex;
+    align-items: center;
+    background: hsla(0,0%,15%,1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    padding: 0.5em;
+    border-bottom: solid 1px hsla(180,0%,40%,1);
+    cursor: default;
+}
+
+#control .logo {
+	flex-grow: 1;
+    color: hsl(37, 100%, 71%);
+    font-style: italic;
+}
+
+#control .logo a {
+	text-decoration: none;
+}
+
+#control .logo a:hover {
+	text-decoration: underline;
+}
+
+#control .logo .version {
+	font-size: 0.5em;
+    color: #7b7b7b;
+}
+
+#control .logo a:hover .version {
+	color: inherit;
+}
+
+#control .buttons {
+	display: flex;
+}
+
+#control button {
+	background: transparent;
+    color: white;
+    border: solid 1px #666666;
+    font-size: 0.75em;
+}
+
+#control button:first-child {
+	border-radius: 4px 0 0 4px;
+	border-right: none;
+}
+
+#control button:last-child {
+	border-radius: 0 4px 4px 0;
+}
+
+#control button:hover,
+#control button:active {
+    background: hsla(0,0%,20%,1);
+    color: #ffc76b;
+    text-shadow: 1px 1px #000000;
+}
+
+#control button:active {
+	box-shadow: inset 0 0 10px #050e0e;
 }
 
 #log {
