@@ -8,5 +8,7 @@
   },
   "author": "Jianru Lin",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "jade": "^1.11.0"
+  }
 }
