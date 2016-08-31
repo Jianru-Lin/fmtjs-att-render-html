@@ -299,6 +299,8 @@ type_handler['TryStatement'] = function(ast, ctx) {
 				if (ast.finalizer) {
 					return [
 						vsp(),
+						vkeyword('finally'),
+						vsp(),
 						vdom('span', 'finalizer', process_ast(ast.finalizer, ctx))
 					]
 				}
