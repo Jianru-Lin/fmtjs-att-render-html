@@ -118,8 +118,9 @@ type_handler['ExpressionStatement'] = function(ast, ctx) {
 		ast.type,
 		[
 			vdom('span', 'expression', function() {
-				// 如果是函数表达式的话，我们要给它补上括号，其他则没必要
-				if (ast.expression.type === 'FunctionExpression') {
+				// 如果是函数表达式或者对象的话，我们要给它补上括号，其他则没必要
+				if (ast.expression.type === 'FunctionExpression' ||
+					ast.expression.type === 'ObjectExpression') {
 					return v_exp_brace(process_ast(ast.expression, ctx))
 				}
 				else {
