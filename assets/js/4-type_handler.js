@@ -74,13 +74,24 @@ type_handler['FunctionDeclaration'] = function(ast, ctx) {
 	)
 }
 
-type_handler['FunctionExpression'] = function(ast, ctx) {
+// ccfg = {no_function_keyword: true|false} 可配置是否生成 function 关键词
+// ObjectExpression 下的 Property 会使用这个配置
+type_handler['FunctionExpression'] = function(ast, ctx, ccfg) {
 	return vdom(
 		'div',
 		ast.type,
 		[
-			vdom('span', 'keyword','function'),
-			vsp(),
+			function() {
+				if (ccfg && ccfg.no_function_keyword) {
+					return null
+				}
+				else {
+					return [
+						vdom('span', 'keyword','function'),
+						vsp()
+					]
+				}
+			},
 			// id 部分不一定存在，可有可无
 			function() {
 				if (ast.id) {
@@ -831,19 +842,68 @@ type_handler['Property'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		function() {
-			return [
-				function() {
-					if (ast.computed) {
-						return vdom('span', 'key', vsqbracket(process_ast(ast.key, ctx)))
-					}
-					else {
-						return vdom('span', 'key', process_ast(ast.key, ctx))
-					}
-				},
-				vcolon(),
-				vsp(),
-				vdom('span', 'value', process_ast(ast.value, ctx))
-			]
+			// ES6 属性简写？
+			if (ast.shorthand) {
+				assert(ast.method === false)
+				assert(ast.computed === false)
+				assert(ast.kind === 'init')
+				assert(ast.key && ast.key.type === 'Identifier')
+				assert(ast.key.type === ast.value.type)
+				assert(ast.key.name === ast.value.name)
+				return vdom('span', ['key', 'shorthand'], process_ast(ast.key, ctx))
+			}
+			// get/set ？
+			else if (ast.kind === 'get' || ast.kind === 'set') {
+				assert(ast.method === false)
+				return [
+					vkeyword(ast.kind),
+					vsp(),
+					function() {
+						if (ast.computed) {
+							return vdom('span', 'key', vsqbracket(process_ast(ast.key, ctx)))
+						}
+						else {
+							return vdom('span', 'key', process_ast(ast.key, ctx))
+						}
+					},
+					vdom('span', 'value', process_ast(ast.value, ctx, {no_function_keyword: true})) // 注意传递了信息给 FunctionExpression 让它不要生成 function 关键字
+				]
+			}
+			else {
+				// ES6 方法？
+				if (ast.method) {
+					assert(ast.shorthand === false)
+					assert(ast.kind === 'init')
+					return [
+						function() {
+							if (ast.computed) {
+								return vdom('span', 'key', vsqbracket(process_ast(ast.key, ctx)))
+							}
+							else {
+								return vdom('span', 'key', process_ast(ast.key, ctx))
+							}
+						},
+						vsp(),
+						vdom('span', 'value', process_ast(ast.value, ctx, {no_function_keyword: true})) // 注意传递了信息给 FunctionExpression 让它不要生成 function 关键字
+					]
+				}
+				// 老的属性表达方式
+				else {
+					return [
+						function() {
+							if (ast.computed) {
+								return vdom('span', 'key', vsqbracket(process_ast(ast.key, ctx)))
+							}
+							else {
+								return vdom('span', 'key', process_ast(ast.key, ctx))
+							}
+						},
+						vcolon(),
+						vsp(),
+						vdom('span', 'value', process_ast(ast.value, ctx))
+					]
+				}
+			}
 		}
 	)
 }
