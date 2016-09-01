@@ -920,9 +920,9 @@ type_handler['Literal'] = function(ast, ctx) {
 	var value_type = typeof value
 	switch (value_type) {
 		case 'number':
-			// 优先按照原始数值显示（维持进制）
+			// 优先按照原始数值显示（维持进制）注意字母强制转为小写
 			return vdom('span', [ast.type, value_type], [
-				vdom('span', 'raw', raw),
+				vdom('span', 'raw', raw.toLowerCase()),
 				vdom('span', 'value', value.toString())
 			])
 		case 'boolean':
