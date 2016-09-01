@@ -64,9 +64,36 @@ type_handler['FunctionExpression'] = function(ast, ctx) {
 				}
 			},
 			vdom('span', 'params', function() {
-				return vbrace(vjoin(process_ast_list(ast.params, ctx).map(wrap_vdom('span', 'param')), function() {
-					return [vcomma(), vsp()]
-				}))
+				// 支持默认参数
+				var params_and_defaults = zip(ast.params, ast.defaults)
+				return vbrace(
+					vjoin(
+						params_and_defaults.map(function(item) {
+							var param = item[0]
+							var deflt = item[1]
+							return vdom(
+								'span',
+								'param',
+								[
+									vdom('span', 'name', process_ast(param, ctx)),
+									function() {
+										if (deflt) {
+											return [
+												vsp(),
+												vdom('span', 'eq', '='),
+												vsp(),
+												vdom('span', 'default', process_ast(deflt, ctx))
+											]
+										}
+									}
+								]
+							)
+						}), 
+						function() {
+							return [vcomma(), vsp()]
+						}
+					)
+				)
 			}),
 			vsp(),
 			vdom('span', 'body', [process_ast(ast.body, ctx)])
