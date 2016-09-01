@@ -233,6 +233,47 @@ type_handler['BlockStatement'] = function(ast, ctx) {
 	)
 }
 
+type_handler['ClassDeclaration'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('class'),
+			vsp(),
+			process_ast(ast.id, ctx),
+			vsp(),
+			function() {
+				if (ast.superClass) {
+					return [
+						vkeyword('extends'),
+						vsp(),
+						vdom('span', 'superClass', process_ast(ast.superClass, ctx)),
+						vsp()
+					]
+				}
+			},
+			vbracket(function() {
+				vdom('span', 'body', process_ast(ast.body, ctx))
+			})
+		]
+	)
+}
+
+type_handler['ClassBody'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		process_ast_list(ast.body, ctx).map(wrap_vdom('div', 'body-item'))
+	)
+}
+
+// type_handler['MethodDefinition'] = function(ast, ctx) {
+// 	return vdom(
+// 		'span',
+		
+// 	)
+// }
+
 // ccfg = {nosemi: true|false} 可配置是否生成末尾分号
 // ForStatement 和 ForInStatement 会使用这个配置
 type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
