@@ -81,9 +81,36 @@ type_handler['ArrowFunctionExpression'] = function(ast, ctx) {
 		ast.type,
 		[
 			vdom('span', 'params', function() {
-				return vbrace(vjoin(process_ast_list(ast.params, ctx).map(wrap_vdom('span', 'params')), function() {
-					return [vcomma(), vsp()]
-				}))
+				// 支持默认参数
+				var params_and_defaults = zip(ast.params, ast.defaults)
+				return vbrace(
+					vjoin(
+						params_and_defaults.map(function(item) {
+							var param = item[0]
+							var deflt = item[1]
+							return vdom(
+								'span',
+								'param',
+								[
+									vdom('span', 'name', process_ast(param, ctx)),
+									function() {
+										if (deflt) {
+											return [
+												vsp(),
+												vdom('span', 'eq', '='),
+												vsp(),
+												vdom('span', 'default', process_ast(deflt, ctx))
+											]
+										}
+									}
+								]
+							)
+						}),
+						function() {
+							return [vcomma(), vsp()]
+						}
+					)
+				)
 			}),
 			vsp(),
 			voperator('=>'),
@@ -848,6 +875,17 @@ function wrap_vdom(name, attrs) {
 	return function(vdom_item) {
 		return vdom(name, attrs, [vdom_item])
 	}
+}
+
+function zip(list_a, list_b) {
+	assert(Array.isArray(list_a))
+	assert(Array.isArray(list_b))
+	// assert(list_a.length === list_b.length)
+	var new_list = []
+	for (var i = 0; i < list_a.length; ++i) {
+		new_list.push([list_a[i], list_b[i]])
+	}
+	return new_list
 }
 
 function process_ast_list(ast_list, ctx) {
