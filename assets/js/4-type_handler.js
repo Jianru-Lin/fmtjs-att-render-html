@@ -916,11 +916,15 @@ type_handler['Literal'] = function(ast, ctx) {
 	}
 
 	var value = ast.value
+	var raw = ast.raw
 	var value_type = typeof value
 	switch (value_type) {
 		case 'number':
-			// 全都会转为 10 进制显示
-			return vdom('span', [ast.type, value_type], value.toString())
+			// 优先按照原始数值显示（维持进制）
+			return vdom('span', [ast.type, value_type], [
+				vdom('span', 'raw', raw),
+				vdom('span', 'value', value.toString())
+			])
 		case 'boolean':
 			return vdom('span', [ast.type, value_type], value.toString())
 		case 'object':

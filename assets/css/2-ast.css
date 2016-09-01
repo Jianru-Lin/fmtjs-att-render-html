@@ -131,6 +131,7 @@
 .Literal,
 .TemplateLiteral {
 	color: #F99157;
+	cursor: pointer;
 }
 
 .Literal:hover,
@@ -141,6 +142,19 @@
 .Literal.string {
 	color: rgb(153,204,153);
 }
+
+/* 数值类型的字面量默认显示原始值（保留进制） */
+
+#content .Literal.number .value {
+	display: none;
+}
+
+/*#content .Literal.number:hover .value {
+	display: block;
+	position: absolute;
+    background: #515151;
+}
+*/
 
 .template-expression > .prefix,
 .template-expression > .postfix {
