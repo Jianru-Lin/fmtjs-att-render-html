@@ -898,6 +898,17 @@ type_handler['TemplateLiteral'] = function(ast, ctx) {
 	)
 }
 
+type_handler['TaggedTemplateExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'tag', process_ast(ast.tag, ctx)),
+			vdom('span', 'quasi', process_ast(ast.quasi, ctx))
+		]
+	)
+}
+
 type_handler['Literal'] = function(ast, ctx) {
 	// console.log(ast)
 	if (ast.regex) {
