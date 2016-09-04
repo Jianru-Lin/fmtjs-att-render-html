@@ -335,7 +335,7 @@ type_handler['VariableDeclarator'] = function(ast, ctx) {
 type_handler['ReturnStatement'] = function(ast, ctx) {
 	// console.log(ast)
 	return vdom(
-		'span',
+		'div',
 		ast.type,
 		[
 			vdom('span', 'keyword', 'return'),
