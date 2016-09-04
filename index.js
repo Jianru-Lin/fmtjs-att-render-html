@@ -1,5 +1,5 @@
 var pkg = require('./package.json')
-var jade = require('jade')
+var pug = require('pug')
 var assets = require('./lib/assets')
 
 module.exports = render
@@ -8,7 +8,7 @@ function render(att, options) {
 	var filename = options.filename || 'unknown'
 	var version = options.version || pkg.version
 	var a = assets.load()
-	var fn = jade.compile(a.template, {})
+	var fn = pug.compile(a.template, {})
 	return fn({
 		filename: filename,
 		version: version,
