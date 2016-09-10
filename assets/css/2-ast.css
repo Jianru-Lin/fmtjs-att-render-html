@@ -54,6 +54,7 @@
 
 .ConditionalExpression,
 .ClassDeclaration > .collapsable,
+.ClassExpression > .collapsable,
 .SwitchStatement > .collapsable,
 .BlockStatement > .body > .collapsable {
 	/*outline: solid 1px rgba(197, 197, 197, 0.2);*/

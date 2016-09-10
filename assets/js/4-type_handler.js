@@ -215,9 +215,10 @@ type_handler['ExpressionStatement'] = function(ast, ctx) {
 		ast.type,
 		[
 			vdom('span', 'expression', function() {
-				// 如果是函数表达式或者对象的话，我们要给它补上括号，其他则没必要
+				// 如果是函数表达式、对象或者类表达式的话，我们要给它补上括号，其他则没必要
 				if (ast.expression.type === 'FunctionExpression' ||
-					ast.expression.type === 'ObjectExpression') {
+					ast.expression.type === 'ObjectExpression' ||
+					ast.expression.type === 'ClassExpression') {
 					return v_exp_brace(process_ast(ast.expression, ctx))
 				}
 				else {
@@ -247,6 +248,38 @@ type_handler['ClassDeclaration'] = function(ast, ctx) {
 			vsp(),
 			process_ast(ast.id, ctx),
 			vsp(),
+			function() {
+				if (ast.superClass) {
+					return [
+						vkeyword('extends'),
+						vsp(),
+						vdom('span', 'superClass', process_ast(ast.superClass, ctx)),
+						vsp()
+					]
+				}
+			},
+			vbracket(function() {
+				return vdom('span', 'body', process_ast(ast.body, ctx))
+			})
+		]
+	)
+}
+
+type_handler['ClassExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vkeyword('class'),
+			vsp(),
+			function() {
+				if (ast.id) {
+					return [
+						process_ast(ast.id, ctx),
+						vsp(),
+					]
+				}
+			},
 			function() {
 				if (ast.superClass) {
 					return [
