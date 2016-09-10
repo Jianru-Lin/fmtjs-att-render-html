@@ -80,6 +80,7 @@ type_handler['FunctionDeclaration'] = function(ast, ctx) {
 
 // ccfg = {no_function_keyword: true|false} 可配置是否生成 function 关键词
 // ObjectExpression 下的 Property 会使用这个配置
+// Class 下的 MethodDefinition 也会使用这个配置
 type_handler['FunctionExpression'] = function(ast, ctx, ccfg) {
 	return vdom(
 		'div',
@@ -257,7 +258,7 @@ type_handler['ClassDeclaration'] = function(ast, ctx) {
 				}
 			},
 			vbracket(function() {
-				vdom('span', 'body', process_ast(ast.body, ctx))
+				return vdom('span', 'body', process_ast(ast.body, ctx))
 			})
 		]
 	)
@@ -268,6 +269,47 @@ type_handler['ClassBody'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		process_ast_list(ast.body, ctx).map(wrap_vdom('div', 'body-item'))
+	)
+}
+
+type_handler['MethodDefinition'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			function() {
+				if (ast['static']) {
+					return [
+						vkeyword('static'),
+						vsp()
+					]
+				}
+			},
+			function() {
+				if (ast.kind === 'get' || ast.kind === 'set') {
+					return [
+						vkeyword(ast.kind),
+						vsp()
+					]
+				}
+				else {
+					assert(ast.kind === 'method' || ast.kind === 'constructor')
+					// do nothing
+				}
+			},
+			function() {
+				if (ast.computed) {
+					return vdom('span', 'key', vsqbracket(process_ast(ast.key, ctx)))
+				}
+				else {
+					return vdom('span', 'key', process_ast(ast.key, ctx))
+				}
+			},
+			vsp(),
+			function() {
+				return vdom('span', 'value', process_ast(ast.value, ctx, {no_function_keyword: true})) // 注意传递了信息给 FunctionExpression 让它不要生成 function 关键字
+			}
+		]
 	)
 }
 
