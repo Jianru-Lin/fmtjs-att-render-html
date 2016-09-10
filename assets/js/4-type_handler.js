@@ -346,6 +346,14 @@ type_handler['MethodDefinition'] = function(ast, ctx) {
 	)
 }
 
+type_handler['Super'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		vkeyword('super')
+	)
+}
+
 // type_handler['MethodDefinition'] = function(ast, ctx) {
 // 	return vdom(
 // 		'span',
