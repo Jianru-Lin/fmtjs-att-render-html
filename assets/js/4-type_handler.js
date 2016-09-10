@@ -11,7 +11,11 @@ type_handler['Program'] = function(ast, ctx) {
 }
 
 type_handler['EmptyStatement'] = function(ast, ctx) {
-	// ignore
+	return vdom(
+		'div',
+		ast.type,
+		vsemi()
+	)
 }
 
 type_handler['DebuggerStatement'] = function(ast, ctx) {
@@ -524,6 +528,35 @@ type_handler['ForInStatement'] = function(ast, ctx) {
 				}),
 				vsp(),
 				vkeyword('in'),
+				vsp(),
+				vdom('span', 'right', process_ast(ast.right, ctx))
+			]),
+			vsp(),
+			vdom('span', 'body', process_ast(ast.body, ast))
+		]
+	)
+}
+
+type_handler['ForOfStatement'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('for'),
+			vsp(),
+			// 少见的括号在结构之上的例外
+			vbrace([
+				vdom('span', 'left', function() {
+					// 命令 VariableDeclaration 不要生成末尾分号，因为这里不需要
+					if (ast.left && ast.left.type === 'VariableDeclaration') {
+						return process_ast(ast.left, ctx, {nosemi: true})
+					}
+					else {
+						return process_ast(ast.left, ctx)
+					}
+				}),
+				vsp(),
+				vkeyword('of'),
 				vsp(),
 				vdom('span', 'right', process_ast(ast.right, ctx))
 			]),
