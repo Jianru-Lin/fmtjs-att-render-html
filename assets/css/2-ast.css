@@ -35,7 +35,8 @@
 	vertical-align: top;
 }
 
-.ObjectExpression > .properties > .collapsable {
+.ObjectExpression > .properties > .collapsable,
+.ObjectPattern > .properties > .collapsable {
 	margin-top: -1em;
     background: rgba(102, 176, 204, 0.2);
     vertical-align: top;
@@ -47,8 +48,12 @@
 .BlockStatement > .body > .collapsable:empty + .collapsable-switcher,
 .ArrayExpression > .elements > .collapsable:empty,
 .ArrayExpression > .elements > .collapsable:empty + .collapsable-switcher,
+.ArrayPattern > .elements > .collapsable:empty,
+.ArrayPattern > .elements > .collapsable:empty + .collapsable-switcher,
 .ObjectExpression > .properties > .collapsable:empty,
-.ObjectExpression > .properties > .collapsable:empty + .collapsable-switcher {
+.ObjectExpression > .properties > .collapsable:empty + .collapsable-switcher,
+.ObjectPattern > .properties > .collapsable:empty,
+.ObjectPattern > .properties > .collapsable:empty + .collapsable-switcher {
 	display: none !important; /* 空对象不显示 */
 }
 

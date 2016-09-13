@@ -976,6 +976,7 @@ type_handler['ArrayExpression'] = function(ast, ctx) {
 		ast.type,
 		vdom('span', 'elements', vsqbracket(function() {
 			if (!ast.elements || ast.elements.length < 1) return
+			// BUG: elements 中可能会有 null 情况
 			return vjoin(process_ast_list(ast.elements, ctx).map(wrap_vdom('span', 'element')), function() {
 				return [vcomma(), vsp()]
 			})
@@ -1005,9 +1006,15 @@ type_handler['Property'] = function(ast, ctx) {
 				assert(ast.computed === false)
 				assert(ast.kind === 'init')
 				assert(ast.key && ast.key.type === 'Identifier')
-				assert(ast.key.type === ast.value.type)
-				assert(ast.key.name === ast.value.name)
-				return vdom('span', ['key', 'shorthand'], process_ast(ast.key, ctx))
+
+				if (ast.key.type === ast.value.type) {
+					assert(ast.key.name === ast.value.name)
+					return vdom('span', ['key', 'shorthand'], process_ast(ast.key, ctx))
+				}
+				else {
+					assert(ast.value.type === 'AssignmentPattern')
+					return vdom('span', ['key', 'shorthand'], process_ast(ast.value, ctx))
+				}
 			}
 			// get/set ？
 			else if (ast.kind === 'get' || ast.kind === 'set') {
@@ -1062,6 +1069,66 @@ type_handler['Property'] = function(ast, ctx) {
 				}
 			}
 		}
+	)
+}
+
+type_handler['AssignmentPattern'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'left', process_ast(ast.left, ctx)),
+			vsp(),
+			voperator('='),
+			vsp(),
+			vdom('span', 'right', process_ast(ast.right, ctx)),
+		]
+	)
+}
+
+type_handler['ArrayPattern'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		vdom('span', 'elements', vsqbracket(function() {
+			if (!ast.elements || ast.elements.length < 1) return
+			// 把 elements 中为 null 的都转为 Array
+			var elements = ast.elements.map(function(e) {
+				if (e === null) {
+					return {
+						type: 'ArrayPatternNullElement'
+					}
+				}
+				else {
+					return e
+				}
+			})
+			// 逐个转换
+			return vjoin(process_ast_list(elements, ctx).map(wrap_vdom('span', 'element')), function() {
+				return [vcomma(), vsp()]
+			})
+		}))
+	)
+}
+
+// 为了处理 ArrayPattern 中 null 元素而扩展出来的类型
+// 不属于 esprima 解析结果
+type_handler['ArrayPatternNullElement'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		null
+	)
+}
+
+type_handler['ObjectPattern'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		vdom('span', 'properties', vbracket(function() {
+			if (!ast.properties || ast.properties.length < 1) return
+			return process_ast_list(ast.properties, ctx).map(wrap_vdom('div', 'property'))
+		}))
 	)
 }
 
