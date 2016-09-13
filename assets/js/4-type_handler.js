@@ -42,7 +42,9 @@ type_handler['FunctionDeclaration'] = function(ast, ctx) {
 			vsp(),
 			vdom('span', 'params', function() {
 				// 支持默认参数
-				var params_and_defaults = zip(ast.params, ast.defaults)
+				var params = ast.params || []
+				var defaults = ast.defaults || []
+				var params_and_defaults = zip(params, defaults)
 				return vbrace(
 					vjoin(
 						params_and_defaults.map(function(item) {
@@ -108,7 +110,9 @@ type_handler['FunctionExpression'] = function(ast, ctx, ccfg) {
 			},
 			vdom('span', 'params', function() {
 				// 支持默认参数
-				var params_and_defaults = zip(ast.params, ast.defaults)
+				var params = ast.params || []
+				var defaults = ast.defaults || []
+				var params_and_defaults = zip(params, defaults)
 				return vbrace(
 					vjoin(
 						params_and_defaults.map(function(item) {
@@ -850,6 +854,18 @@ type_handler['NewExpression'] = function(ast, ctx) {
 					})
 				})
 			]),
+		]
+	)
+}
+
+type_handler['MetaProperty'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'meta', process_ast(ast.meta, ctx)),
+			vdom('span', 'dot', '.'),
+			vdom('span', 'property', process_ast(ast.property, ctx))
 		]
 	)
 }
