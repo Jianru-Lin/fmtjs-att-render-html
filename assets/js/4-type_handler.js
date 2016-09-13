@@ -166,7 +166,9 @@ type_handler['ArrowFunctionExpression'] = function(ast, ctx) {
 		[
 			vdom('span', 'params', function() {
 				// 支持默认参数
-				var params_and_defaults = zip(ast.params, ast.defaults)
+				var params = ast.params || []
+				var defaults = ast.defaults || []
+				var params_and_defaults = zip(params, defaults)
 				return vbrace(
 					vjoin(
 						params_and_defaults.map(function(item) {
@@ -540,8 +542,8 @@ type_handler['DoWhileStatement'] = function(ast, ctx) {
 
 type_handler['TryStatement'] = function(ast, ctx) {
 	// console.log(ast)
-	assert(ast.guardedHandlers.length === 0)
-	assert(ast.handlers.length === 0 || ast.handlers.length === 1)
+	if (ast.guardedHandlers) assert(ast.guardedHandlers.length === 0)
+	if (ast.handlers) assert(ast.handlers.length === 0 || ast.handlers.length === 1)
 	return vdom(
 		'div',
 		ast.type,
