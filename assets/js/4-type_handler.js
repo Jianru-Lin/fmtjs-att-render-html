@@ -225,6 +225,17 @@ type_handler['RestElement'] = function(ast, ctx) {
 	)
 }
 
+type_handler['SpreadElement'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vkeyword('...'),
+			vdom('span', 'argument', process_ast(ast.argument, ctx))
+		]
+	)
+}
+
 type_handler['ExpressionStatement'] = function(ast, ctx) {
 	return vdom(
 		'div',
