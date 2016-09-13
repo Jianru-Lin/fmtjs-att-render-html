@@ -38,6 +38,11 @@ type_handler['FunctionDeclaration'] = function(ast, ctx) {
 		[
 			vdom('span', 'keyword','function'),
 			vsp(),
+			function() {
+				if (ast.generator) {
+					return [vkeyword('*'), vsp()]
+				}
+			},
 			vdom('span', 'id', process_ast(ast.id, ctx)),
 			vsp(),
 			vdom('span', 'params', function() {
@@ -97,6 +102,11 @@ type_handler['FunctionExpression'] = function(ast, ctx, ccfg) {
 						vdom('span', 'keyword','function'),
 						vsp()
 					]
+				}
+			},
+			function() {
+				if (ast.generator) {
+					return [vkeyword('*'), vsp()]
 				}
 			},
 			// id 部分不一定存在，可有可无
@@ -440,6 +450,33 @@ type_handler['ReturnStatement'] = function(ast, ctx) {
 			},
 			vsp(),
 			vsemi()
+		]
+	)
+}
+
+type_handler['YieldExpression'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'keyword', 'yield'),
+			function() {
+				if (ast.delegate) {
+					assert(ast.argument)
+					return [
+						vsp(),
+						vkeyword('*')
+					]
+				}
+			},
+			function() {
+				if (ast.argument) {
+					return [
+						vsp(),
+						vdom('span', 'argument', process_ast(ast.argument, ctx))
+					]
+				}
+			}
 		]
 	)
 }
