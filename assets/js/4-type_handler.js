@@ -976,11 +976,30 @@ type_handler['ArrayExpression'] = function(ast, ctx) {
 		ast.type,
 		vdom('span', 'elements', vsqbracket(function() {
 			if (!ast.elements || ast.elements.length < 1) return
-			// BUG: elements 中可能会有 null 情况
-			return vjoin(process_ast_list(ast.elements, ctx).map(wrap_vdom('span', 'element')), function() {
+			var elements = ast.elements.map(function(e) {
+				if (e === null) {
+					return {
+						type: 'ArrayExpressionNullElement'
+					}
+				}
+				else {
+					return e
+				}
+			})
+			return vjoin(process_ast_list(elements, ctx).map(wrap_vdom('span', 'element')), function() {
 				return [vcomma(), vsp()]
 			})
 		}))
+	)
+}
+
+// 为了处理 ArrayExpression 中 null 元素而扩展出来的类型
+// 不属于 esprima 解析结果
+type_handler['ArrayExpressionNullElement'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		null
 	)
 }
 
