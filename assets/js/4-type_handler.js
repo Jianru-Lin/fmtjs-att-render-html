@@ -446,6 +446,21 @@ type_handler['VariableDeclarator'] = function(ast, ctx) {
 	)
 }
 
+type_handler['WithStatement'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('with'),
+			vsp(),
+			// 少见的括号在结构之上的例外
+			vbrace(vdom('span', 'object', process_ast(ast.object, ctx))),
+			vsp(),
+			vdom('span', 'body', process_ast(ast.body, ctx))
+		]
+	)
+}
+
 type_handler['ReturnStatement'] = function(ast, ctx) {
 	// console.log(ast)
 	return vdom(
