@@ -86,9 +86,13 @@
 	background: rgba(162, 162, 162, 0.05);
 }
 
+.ObjectExpression .Property > .key > .Identifier {
+	color: #CCCCCC;
+}
+
 .collapsable-switcher {
-    background: #F2777A;
-    color: white;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.25);
     border-radius: 2px;
     cursor: pointer;
     font-size: 8px;
@@ -98,6 +102,7 @@
 }
 
 .collapsable-switcher:hover {
+	color: white !important;
     background: #ff8888 !important;
 }
 
@@ -137,7 +142,7 @@
 
 .Literal,
 .TemplateLiteral {
-	color: #F99157;
+	color: rgb(153,204,153);
 	cursor: pointer;
 }
 
@@ -165,13 +170,19 @@
 
 .template-expression > .prefix,
 .template-expression > .postfix {
-	color: green;
+	color: rgba(199, 199, 199, 0.3);
 }
 
 .comma,
 .colon,
-.exp-brace {
+.exp-brace,
+.dot,
+.semicolon {
 	color: rgba(199, 199, 199, 0.3);
+}
+
+.dot {
+	color: #CCCCCC;
 }
 
 .exp-brace:not(.brace) {

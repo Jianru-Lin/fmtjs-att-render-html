@@ -461,6 +461,21 @@ type_handler['WithStatement'] = function(ast, ctx) {
 	)
 }
 
+type_handler['ImportDeclaration'] = function(ast, ctx) {
+	assert(ast.sourceType === 'module')
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('import'),
+			vsp(),
+			vdom('span', 'specifiers', process_ast(ast.specifiers, ctx)),
+			vsp(),
+			vdom('span', 'source', process_ast(ast.source, ctx))
+		]
+	)
+}
+
 type_handler['ReturnStatement'] = function(ast, ctx) {
 	// console.log(ast)
 	return vdom(
@@ -831,6 +846,20 @@ type_handler['SwitchCase'] = function(ast, ctx) {
 			vcolon(),
 			vsp(),
 			vdom('span', 'consequent', process_ast_list(ast.consequent, ctx))
+		]
+	)
+}
+
+type_handler['ExportNamedDeclaration'] = function(ast, ctx) {
+	assert(Array.isArray(ast.specifiers) && ast.specifiers.length === 0)
+	assert(ast.source === null)
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('export'),
+			vsp(),
+			vdom('span', 'declarations', process_ast_list(ast.declarations, ctx))
 		]
 	)
 }

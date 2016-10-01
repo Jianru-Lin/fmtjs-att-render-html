@@ -1,5 +1,39 @@
+var translator = (function() {
+	var lang_table = {
+		'en-us': {
+			'fold-all': 'Fold All',
+			'unfold-all': 'Unfold All'
+		},
+		'zh-cn': {
+			'fold-all': '折叠全部',
+			'unfold-all': '展开全部'
+		}
+	}
+
+	return {
+		run: function() {
+			var lang = navigator.language || navigator.browserLanguage || 'en-us'
+			return this.convert_to(lang)
+		},
+		convert_to: function(lang) {
+			lang = lang.toLowerCase()
+			if (!lang_table[lang]) return false
+			$('[x-t]').each(function(i, item) {
+				$item = $(item)
+				var v = $item.attr('x-t')
+				if (lang_table[lang][v]) {
+					$item.text(lang_table[lang][v])
+				}
+			})
+			return true
+		}
+	}
+})();
+
 // $(function() {
 window.onload = function() {
+	translator.run()
+
 	var ast = window.ast
 	try {
 		// $('#ast').text(JSON.stringify(ast, null, 4))

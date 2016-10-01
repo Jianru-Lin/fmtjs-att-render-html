@@ -3,6 +3,7 @@ html, body {
 	padding: 0;
 	border: none;
 	font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New","Microsoft YaHei",monospace;
+	font-size: 18px;
 	background: #2D2D2D;
 }
 
@@ -42,6 +43,7 @@ button:focus {
 #title h1 {
 	margin: 0;
 	text-shadow: 1px 1px black;
+	color: hsl(37, 100%, 71%);
 }
 
 #ast, #vdom, #content, #log {
@@ -73,7 +75,7 @@ button:focus {
     left: 0;
     top: 0;
     right: 0;
-    padding: 0.5em;
+    padding: 0.5em 1em;
     border-bottom: solid 1px hsla(180,0%,40%,1);
     cursor: default;
 }
@@ -81,7 +83,6 @@ button:focus {
 #control .logo {
 	flex-grow: 1;
     color: hsl(37, 100%, 71%);
-    font-style: italic;
 }
 
 #control .logo a {
@@ -119,6 +120,11 @@ button:focus {
 
 #control button:last-child {
 	border-radius: 0 4px 4px 0;
+}
+
+#control button#exp-all,
+#control button#col-all {
+	min-width: 8em;
 }
 
 #control button:hover,

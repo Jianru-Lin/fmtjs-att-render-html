@@ -11,8 +11,8 @@ html
 					|lambda-view 
 					span.version= version
 			span.buttons
-				button#exp-all 完全展开
-				button#col-all 完全折叠
+				button#exp-all(x-t="unfold-all") Unfold All
+				button#col-all(x-t="fold-all") Fold All
 		#log
 		#title
 			h1= filename
