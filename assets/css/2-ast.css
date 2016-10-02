@@ -57,6 +57,7 @@
 	display: none !important; /* 空对象不显示 */
 }
 
+.area, 
 .ConditionalExpression,
 .ClassDeclaration > .collapsable,
 .ClassExpression > .collapsable,
@@ -108,6 +109,16 @@
 
 .collapsable-switcher.hidden {
 	display: none !important;
+}
+
+/* 用于支持 SequenceExpression 在水平布局模式和垂直布局模式间切换 */
+
+#content .SequenceExpression > .expressions > .operator {
+	cursor: pointer;
+}
+
+#content .SequenceExpression.vertical-layout > .expressions > .sp {
+    display: block;
 }
 
 /* Syntax Highlight */

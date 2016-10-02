@@ -1073,7 +1073,7 @@ type_handler['SequenceExpression'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		vdom('span', 'expressions', function() {
-			return vjoin(process_ast_list(ast.expressions, ctx).map(v_exp_brace), function() {
+			return vjoin(process_ast_list(ast.expressions, ctx).map(v_exp_brace).map(wrap_vdom('span', 'expression')), function() {
 				return [voperator(','), vsp()]
 			})
 		})

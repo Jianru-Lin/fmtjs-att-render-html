@@ -51,6 +51,14 @@ window.onload = function() {
 		throw err
 	}
 
+	// SequenceExpression 的垂直布局与水平布局切换实现
+	$('#content').on('click', '.SequenceExpression > .expressions > .operator', function() {
+		$this = $(this)
+		$SequenceExpression = $this.parent().parent()
+		$SequenceExpression.toggleClass('vertical-layout')
+		$SequenceExpression.toggleClass('area')
+	})
+
 	// 可折叠特性实现
 	$('#content').on('mouseenter', '.left-coll', function() {
 		$this = $(this)
