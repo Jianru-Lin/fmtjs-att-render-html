@@ -21,12 +21,16 @@ type_handler['ExportAllDeclaration'] = function(ast, ctx) {
 			vsp(),
 			vkeyword('from'),
 			vsp(),
-			vdom('span', 'source', process_ast(ast.source, ctx))
+			vdom('span', 'source', process_ast(ast.source, ctx)),
+			vsp(),
+			vsemi()
 		]
 	)
 }
 
 type_handler['ExportNamedDeclaration'] = function(ast, ctx) {
+	// 默认会在末尾生成分号，但这也许是没有必要的
+	var semi_unnecessary = false
 	return vdom(
 		'div',
 		ast.type,
@@ -35,7 +39,10 @@ type_handler['ExportNamedDeclaration'] = function(ast, ctx) {
 			vsp(),
 			function() {
 				if (ast.declaration) {
+					// 断言：有 declaration 必然就不可能有 specifiers
 					assert(Array.isArray(ast.specifiers) && ast.specifiers.length === 0)
+					// 凡是声明类型的，我们没必要在后面生成分号
+					semi_unnecessary = true
 					return vdom('span', 'declaration', function() {
 						return process_ast(ast.declaration, ctx)
 					})
@@ -55,7 +62,11 @@ type_handler['ExportNamedDeclaration'] = function(ast, ctx) {
 						process_ast(ast.source, ctx)
 					]
 				}
-			})
+			}),
+			function() {
+				if (semi_unnecessary) return
+				else return [vsp(), vsemi()]
+			}
 		]
 	)
 }
@@ -69,7 +80,15 @@ type_handler['ExportDefaultDeclaration'] = function(ast, ctx) {
 			vsp(),
 			vkeyword('default'),
 			vsp(),
-			vdom('span', 'declaration', process_ast(ast.declaration, ctx))
+			vdom('span', 'declaration', process_ast(ast.declaration, ctx)),
+			function() {
+				var semi_unnecessary = (ast.declaration.type === 'ClassDeclaration' ||
+										ast.declaration.type === 'FunctionDeclaration' ||
+										ast.declaration.type === 'VariableDeclaration')
+				if (!semi_unnecessary) {
+					return [vsp(), vsemi()]
+				}
+			}
 		]
 	)
 }
@@ -131,8 +150,7 @@ type_handler['FunctionDeclaration'] = function(ast, ctx) {
 				}
 			},
 			function() {
-				// 如下情况时 ast.id 确实可能为 null
-				// export default function () {}
+				// 用在 export 时 ast.id 确实可能为 null
 				if (ast.id) {
 					return vdom('span', 'id', [
 						process_ast(ast.id, ctx),
@@ -492,7 +510,7 @@ type_handler['Super'] = function(ast, ctx) {
 // }
 
 // ccfg = {nosemi: true|false} 可配置是否生成末尾分号
-// ForStatement 和 ForInStatement 会使用这个配置
+// ForStatement, ForInStatement 会使用这个配置
 type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
 	// console.log(ast)
 	assert(ast.kind === 'var' || ast.kind === 'const' || ast.kind === 'let')
