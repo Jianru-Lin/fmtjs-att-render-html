@@ -875,7 +875,7 @@ type_handler['ExportNamedDeclaration'] = function(ast, ctx) {
 		[
 			vkeyword('export'),
 			vsp(),
-			vdom('span', 'declarations', process_ast_list(ast.declarations, ctx))
+			vdom('span', 'declaration', process_ast(ast.declaration, ctx))
 		]
 	)
 }
