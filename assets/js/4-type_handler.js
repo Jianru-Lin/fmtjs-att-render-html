@@ -10,6 +10,22 @@ type_handler['Program'] = function(ast, ctx) {
 	)
 }
 
+type_handler['ExportAllDeclaration'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('export'),
+			vsp(),
+			vdom('span', 'asterisk', '*'),
+			vsp(),
+			vkeyword('from'),
+			vsp(),
+			vdom('span', 'source', process_ast(ast.source, ctx))
+		]
+	)
+}
+
 type_handler['EmptyStatement'] = function(ast, ctx) {
 	return vdom(
 		'div',
