@@ -26,6 +26,77 @@ type_handler['ExportAllDeclaration'] = function(ast, ctx) {
 	)
 }
 
+type_handler['ExportNamedDeclaration'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('export'),
+			vsp(),
+			function() {
+				if (ast.declaration) {
+					assert(Array.isArray(ast.specifiers) && ast.specifiers.length === 0)
+					return vdom('span', 'declaration', function() {
+						return process_ast(ast.declaration, ctx)
+					})
+				}
+				else if (ast.specifiers) {
+					return vbracket(vdom('span', 'specifiers', vjoin(process_ast_list(ast.specifiers, ctx).map(wrap_vdom('span', 'specifier')), function() {
+						return [vcomma(), vsp()]
+					})))
+				}
+			},
+			vdom('span', 'source', function() {
+				if (ast.source) {
+					return [
+						vsp(),
+						vkeyword('from'),
+						vsp(),
+						process_ast(ast.source, ctx)
+					]
+				}
+			})
+		]
+	)
+}
+
+type_handler['ExportDefaultDeclaration'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('export'),
+			vsp(),
+			vkeyword('default'),
+			vsp(),
+			vdom('span', 'declaration', process_ast(ast.declaration, ctx))
+		]
+	)
+}
+
+type_handler['ExportSpecifier'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'local', process_ast(ast.local, ctx)),
+			function() {
+				assert(ast.local.type === ast.exported.type)
+				assert(ast.local.type === 'Identifier')
+				var is_same = ast.local.name === ast.exported.name
+				if (!is_same) {
+					return [
+						vsp(),
+						vkeyword('as'),
+						vsp(),
+						vdom('span', 'exported', process_ast(ast.exported, ctx))
+					]
+				}
+			}
+		]
+	)
+}
+
 type_handler['EmptyStatement'] = function(ast, ctx) {
 	return vdom(
 		'div',
@@ -59,8 +130,16 @@ type_handler['FunctionDeclaration'] = function(ast, ctx) {
 					return [vkeyword('*'), vsp()]
 				}
 			},
-			vdom('span', 'id', process_ast(ast.id, ctx)),
-			vsp(),
+			function() {
+				// 如下情况时 ast.id 确实可能为 null
+				// export default function () {}
+				if (ast.id) {
+					return vdom('span', 'id', [
+						process_ast(ast.id, ctx),
+						vsp()
+					])
+				}
+			},
 			vdom('span', 'params', function() {
 				// 支持默认参数
 				var params = ast.params || []
@@ -289,8 +368,16 @@ type_handler['ClassDeclaration'] = function(ast, ctx) {
 		[
 			vkeyword('class'),
 			vsp(),
-			process_ast(ast.id, ctx),
-			vsp(),
+			function() {
+				// 如下情形时 id 会为 null
+				// export default function () {}
+				if (ast.id) {
+					return vdom('span', 'id', [
+						process_ast(ast.id, ctx),
+						vsp()
+					])
+				}
+			},
 			function() {
 				if (ast.superClass) {
 					return [
@@ -477,20 +564,20 @@ type_handler['WithStatement'] = function(ast, ctx) {
 	)
 }
 
-type_handler['ImportDeclaration'] = function(ast, ctx) {
-	assert(ast.sourceType === 'module')
-	return vdom(
-		'div',
-		ast.type,
-		[
-			vkeyword('import'),
-			vsp(),
-			vdom('span', 'specifiers', process_ast(ast.specifiers, ctx)),
-			vsp(),
-			vdom('span', 'source', process_ast(ast.source, ctx))
-		]
-	)
-}
+// type_handler['ImportDeclaration'] = function(ast, ctx) {
+// 	assert(ast.sourceType === 'module')
+// 	return vdom(
+// 		'div',
+// 		ast.type,
+// 		[
+// 			vkeyword('import'),
+// 			vsp(),
+// 			vdom('span', 'specifiers', process_ast(ast.specifiers, ctx)),
+// 			vsp(),
+// 			vdom('span', 'source', process_ast(ast.source, ctx))
+// 		]
+// 	)
+// }
 
 type_handler['ReturnStatement'] = function(ast, ctx) {
 	// console.log(ast)
@@ -862,20 +949,6 @@ type_handler['SwitchCase'] = function(ast, ctx) {
 			vcolon(),
 			vsp(),
 			vdom('span', 'consequent', process_ast_list(ast.consequent, ctx))
-		]
-	)
-}
-
-type_handler['ExportNamedDeclaration'] = function(ast, ctx) {
-	assert(Array.isArray(ast.specifiers) && ast.specifiers.length === 0)
-	assert(ast.source === null)
-	return vdom(
-		'div',
-		ast.type,
-		[
-			vkeyword('export'),
-			vsp(),
-			vdom('span', 'declaration', process_ast(ast.declaration, ctx))
 		]
 	)
 }
