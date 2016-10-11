@@ -10,6 +10,79 @@ type_handler['Program'] = function(ast, ctx) {
 	)
 }
 
+type_handler['ImportDeclaration'] = function(ast, ctx) {
+	return vdom(
+		'div',
+		ast.type,
+		[
+			vkeyword('import'),
+			function() {
+				if (ast.specifiers && ast.specifiers.length > 0) {
+					return [
+						vsp(),
+						vjoin(process_ast_list(ast.specifiers, ctx).map(wrap_vdom('span', 'specifier')), function() {
+							return [vcomma(), vsp()]
+						})
+					]
+				}
+			},
+			vsp(),
+			vkeyword('from'),
+			vsp(),
+			vdom('span', 'source', process_ast(ast.source, ctx)),
+			vsp(),
+			vsemi()
+		]
+	)
+}
+
+type_handler['ImportDefaultSpecifier'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'local', process_ast(ast.local, ctx))
+		]
+	)
+}
+
+type_handler['ImportSpecifier'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		vbracket(function() {
+			assert(ast.local.type === ast.imported.type)
+			assert(ast.local.type === 'Identifier')
+			if (ast.local.name === ast.imported.name) {
+				return vdom('span', 'imported', process_ast(ast.imported, ctx))
+			}
+			else {
+				return [
+					vdom('span', 'imported', process_ast(ast.imported, ctx)),
+					vsp(),
+					vkeyword('as'),
+					vsp(),
+					vdom('span', 'local', process_ast(ast.local, ctx))
+				]
+			}
+		})
+	)
+}
+
+type_handler['ImportNamespaceSpecifier'] = function(ast, ctx) {
+	return vdom(
+		'span',
+		ast.type,
+		[
+			vdom('span', 'asterisk', '*'),
+			vsp(),
+			vkeyword('as'),
+			vsp(),
+			vdom('span', 'local', process_ast(ast.local, ctx))
+		]
+	)
+}
+
 type_handler['ExportAllDeclaration'] = function(ast, ctx) {
 	return vdom(
 		'div',
