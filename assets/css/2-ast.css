@@ -140,6 +140,10 @@
 	background: #515151;
 }
 
+.MemberExpression > .property .Identifier {
+    color: #e0d09e;
+}
+
 /*.MemberExpression > .property > .left-coll.square-bracket,
 .MemberExpression > .property > .right-coll.square-bracket,*/
 .operator {
