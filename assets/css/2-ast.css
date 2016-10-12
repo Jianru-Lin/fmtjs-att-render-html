@@ -122,6 +122,16 @@
     display: block;
 }
 
+/* 用于支持 ArrayExpression 在水平布局模式和垂直布局模式间切换 */
+
+#content .ArrayExpression > .elements > .collapsable.square-bracket > .comma {
+	cursor: pointer;
+}
+
+#content .ArrayExpression > .elements > .collapsable.square-bracket.vertical-layout > .sp {
+    display: block;
+}
+
 /* Syntax Highlight */
 
 .keyword {

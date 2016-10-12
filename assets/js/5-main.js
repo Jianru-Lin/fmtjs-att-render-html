@@ -59,6 +59,14 @@ window.onload = function() {
 		$SequenceExpression.toggleClass('area')
 	})
 
+	// ArrayExpression 的垂直布局与水平布局切换实现
+	$('#content').on('click', '.ArrayExpression > .elements > .collapsable.square-bracket > .comma', function() {
+		$this = $(this)
+		$collapsable = $this.parent()
+		$collapsable.toggleClass('vertical-layout')
+		$collapsable.toggleClass('area')
+	})
+
 	// 可折叠特性实现
 	$('#content').on('mouseenter', '.left-coll', function() {
 		$this = $(this)
