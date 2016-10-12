@@ -575,13 +575,6 @@ type_handler['Super'] = function(ast, ctx) {
 	)
 }
 
-// type_handler['MethodDefinition'] = function(ast, ctx) {
-// 	return vdom(
-// 		'span',
-		
-// 	)
-// }
-
 // ccfg = {nosemi: true|false} 可配置是否生成末尾分号
 // ForStatement, ForInStatement 会使用这个配置
 type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
@@ -654,21 +647,6 @@ type_handler['WithStatement'] = function(ast, ctx) {
 		]
 	)
 }
-
-// type_handler['ImportDeclaration'] = function(ast, ctx) {
-// 	assert(ast.sourceType === 'module')
-// 	return vdom(
-// 		'div',
-// 		ast.type,
-// 		[
-// 			vkeyword('import'),
-// 			vsp(),
-// 			vdom('span', 'specifiers', process_ast(ast.specifiers, ctx)),
-// 			vsp(),
-// 			vdom('span', 'source', process_ast(ast.source, ctx))
-// 		]
-// 	)
-// }
 
 type_handler['ReturnStatement'] = function(ast, ctx) {
 	// console.log(ast)
