@@ -150,7 +150,7 @@
 	background: #515151;
 }
 
-.MemberExpression > .property > .Identifier {
+.MemberExpression:hover > .property > .Identifier {
     color: #e0d09e;
 }
 
