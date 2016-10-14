@@ -59,7 +59,9 @@ var util = (function() {
 
 // 允许用户对某些结构进行水平／垂直布局切换
 function can_switch_horizontal_vertical_layout() {
-	// SequenceExpression 的垂直布局与水平布局切换实现
+	
+	// SequenceExpression
+
 	$('#content').on('click', '.SequenceExpression > .expressions > .operator', function() {
 		$this = $(this)
 		$SequenceExpression = $this.parent().parent()
@@ -67,8 +69,63 @@ function can_switch_horizontal_vertical_layout() {
 		$SequenceExpression.toggleClass('area')
 	})
 
-	// ArrayExpression 的垂直布局与水平布局切换实现
+	// ArrayExpression
+
 	$('#content').on('click', '.ArrayExpression > .elements > .collapsable.square-bracket > .comma', function() {
+		$this = $(this)
+		$collapsable = $this.parent()
+		$collapsable.toggleClass('vertical-layout')
+		$collapsable.toggleClass('area')
+	})
+
+	// ArrayPattern
+
+	$('#content').on('click', '.ArrayPattern > .elements > .collapsable.square-bracket > .comma', function() {
+		$this = $(this)
+		$collapsable = $this.parent()
+		$collapsable.toggleClass('vertical-layout')
+		$collapsable.toggleClass('area')
+	})
+
+	// FunctionExpression
+
+	$('#content').on('click', '.FunctionExpression > .params > .collapsable > .comma', function() {
+		$this = $(this)
+		$collapsable = $this.parent()
+		$collapsable.toggleClass('vertical-layout')
+		$collapsable.toggleClass('area')
+	})
+
+	// FunctionDeclaration
+
+	$('#content').on('click', '.FunctionDeclaration > .params > .collapsable > .comma', function() {
+		$this = $(this)
+		$collapsable = $this.parent()
+		$collapsable.toggleClass('vertical-layout')
+		$collapsable.toggleClass('area')
+	})
+
+	// ArrowFunctionExpression
+
+	$('#content').on('click', '.ArrowFunctionExpression > .params > .collapsable > .comma', function() {
+		$this = $(this)
+		$collapsable = $this.parent()
+		$collapsable.toggleClass('vertical-layout')
+		$collapsable.toggleClass('area')
+	})
+
+	// CallExpression
+
+	$('#content').on('click', '.CallExpression > .arguments > .collapsable > .comma', function() {
+		$this = $(this)
+		$collapsable = $this.parent()
+		$collapsable.toggleClass('vertical-layout')
+		$collapsable.toggleClass('area')
+	})
+
+	// NewExpression
+
+	$('#content').on('click', '.NewExpression > .arguments > .collapsable > .comma', function() {
 		$this = $(this)
 		$collapsable = $this.parent()
 		$collapsable.toggleClass('vertical-layout')
