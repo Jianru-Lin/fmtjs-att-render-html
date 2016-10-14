@@ -180,12 +180,12 @@ function vbrace(children) {
 
 // vdom left & right brace for expression
 function v_exp_brace(children) {
-	return [
-		vdom('span', ['left-coll', 'brace', 'exp-brace'], '('),
-		vdom('span', ['collapsable', 'exp-brace'], children),
-		vdom('span', ['collapsable-switcher', 'exp-brace', 'hidden'], '...'),
-		vdom('span', ['right-coll', 'brace', 'exp-brace'], ')')
-	]
+	return vdom('span', ['exp-brace'], [
+		vdom('span', ['left-coll'], '('),
+		vdom('span', ['collapsable'], children),
+		vdom('span', ['collapsable-switcher', 'hidden'], '...'),
+		vdom('span', ['right-coll'], ')')
+	])
 }
 
 // vdom left & right bracket

@@ -130,6 +130,16 @@ function can_use_toolbar() {
 	})
 }
 
+// 隐藏部分表达式括号，不要让程序看起来太复杂
+function hide_unnecessary_exp_brace() {
+	$('.exp-brace > .collapsable > .Identifier').parent().parent().addClass('unnecessary')
+	$('.exp-brace > .collapsable > .Literal').parent().parent().addClass('unnecessary')
+	$('.exp-brace > .collapsable > .TaggedTemplateExpression').parent().parent().addClass('unnecessary')
+	$('.exp-brace > .collapsable > .TemplateLiteral').parent().parent().addClass('unnecessary')
+	$('.exp-brace > .collapsable > .ThisExpression').parent().parent().addClass('unnecessary')
+	$('.exp-brace > .collapsable > .MemberExpression').parent().parent().addClass('unnecessary')
+}
+
 // $(function() {
 window.onload = function() {
 	translator.run()
@@ -154,5 +164,6 @@ window.onload = function() {
 	can_switch_horizontal_vertical_layout()
 	can_collapse_expand()
 	can_use_toolbar()
+	hide_unnecessary_exp_brace()
 }
 // })

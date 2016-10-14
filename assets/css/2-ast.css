@@ -201,10 +201,17 @@
 
 .comma,
 .colon,
-.exp-brace,
+.exp-brace > .left-coll,
+.exp-brace > .right-coll,
 .dot,
 .semicolon {
 	color: rgba(199, 199, 199, 0.3);
+}
+
+#content .exp-brace.unnecessary > .left-coll,
+#content .exp-brace.unnecessary > .right-coll,
+#content .exp-brace.unnecessary > .collapsable-switcher {
+	display: none;
 }
 
 .dot {
