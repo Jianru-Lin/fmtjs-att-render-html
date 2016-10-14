@@ -1,3 +1,4 @@
+// 用于支持多语言（中文／英文）
 var translator = (function() {
 	var lang_table = {
 		'en-us': {
@@ -30,27 +31,8 @@ var translator = (function() {
 	}
 })();
 
-// $(function() {
-window.onload = function() {
-	translator.run()
-
-	var ast = window.ast
-	try {
-		// $('#ast').text(JSON.stringify(ast, null, 4))
-		var vdom_item = process_ast(ast, {})
-		// $('#vdom').text(JSON.stringify(vdom_item, null, 4))
-		var dom = vdom_item.toDom()
-		$('#content').append(dom)
-		setTimeout(function() {
-			$('#col-all')[0].click()
-		}, 0)
-	}
-	catch (err) {
-		log('error', err.toString())
-		debugger
-		throw err
-	}
-
+// 允许用户对某些结构进行水平／垂直布局切换
+function can_switch_horizontal_vertical_layout() {
 	// SequenceExpression 的垂直布局与水平布局切换实现
 	$('#content').on('click', '.SequenceExpression > .expressions > .operator', function() {
 		$this = $(this)
@@ -66,7 +48,10 @@ window.onload = function() {
 		$collapsable.toggleClass('vertical-layout')
 		$collapsable.toggleClass('area')
 	})
+}
 
+// 允许用户折叠／展开代码块
+function can_collapse_expand() {
 	// 可折叠特性实现
 	$('#content').on('mouseenter', '.left-coll', function() {
 		$this = $(this)
@@ -111,18 +96,6 @@ window.onload = function() {
 		expand($this.prevAll('.collapsable'))
 	})
 
-	// 按钮功能
-	
-	$('button#col-all').click(function() {
-		$('.collapsable.bracket').addClass('hidden')
-		$('.collapsable-switcher.bracket').removeClass('hidden')
-	})
-	
-	$('button#exp-all').click(function() {
-		$('.collapsable-switcher.bracket').addClass('hidden')
-		$('.collapsable.bracket').removeClass('hidden')
-	})
-
 	function toggle($collapsable) {
 		if ($collapsable.hasClass('hidden')) {
 			expand($collapsable)
@@ -141,5 +114,45 @@ window.onload = function() {
 		$collapsable.removeClass('hidden')
 		$collapsable.nextAll('.collapsable-switcher').addClass('hidden')
 	}
+}
+
+// 允许用户使用工具栏功能
+function can_use_toolbar() {
+	// 工具栏按钮功能
+	$('button#col-all').click(function() {
+		$('.collapsable.bracket').addClass('hidden')
+		$('.collapsable-switcher.bracket').removeClass('hidden')
+	})
+	
+	$('button#exp-all').click(function() {
+		$('.collapsable-switcher.bracket').addClass('hidden')
+		$('.collapsable.bracket').removeClass('hidden')
+	})
+}
+
+// $(function() {
+window.onload = function() {
+	translator.run()
+
+	var ast = window.ast
+	try {
+		// $('#ast').text(JSON.stringify(ast, null, 4))
+		var vdom_item = process_ast(ast, {})
+		// $('#vdom').text(JSON.stringify(vdom_item, null, 4))
+		var dom = vdom_item.toDom()
+		$('#content').append(dom)
+		setTimeout(function() {
+			$('#col-all')[0].click()
+		}, 0)
+	}
+	catch (err) {
+		log('error', err.toString())
+		debugger
+		throw err
+	}
+
+	can_switch_horizontal_vertical_layout()
+	can_collapse_expand()
+	can_use_toolbar()
 }
 // })
