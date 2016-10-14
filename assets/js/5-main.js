@@ -31,6 +31,32 @@ var translator = (function() {
 	}
 })();
 
+// 一些工具函数
+var util = (function() {
+	var obj = {}
+
+	obj.mouse_enter_leave = function(selector, enter_cb, leave_cb) {
+		if (Array.isArray(selector)) {
+			selector.forEach(function(s) {
+				obj.mouse_enter_leave(s, enter_cb, leave_cb)
+			})
+			return
+		}
+
+		enter_cb = enter_cb || function() {}
+		leave_cb = leave_cb || function() {}
+
+		$(selector).on('mouseenter', function() {
+			enter_cb.apply(this, arguments)
+		})
+		$(selector).on('mouseleave', function() {
+			leave_cb.apply(this, arguments)
+		})
+	}
+
+	return obj
+})();
+
 // 允许用户对某些结构进行水平／垂直布局切换
 function can_switch_horizontal_vertical_layout() {
 	// SequenceExpression 的垂直布局与水平布局切换实现
@@ -116,6 +142,36 @@ function can_collapse_expand() {
 	}
 }
 
+// 允许用户在运算符上悬停查看操作数
+function can_highlight_operator() {
+	util.mouse_enter_leave(
+		[
+			'.BinaryExpression > .operator',
+			'.LogicalExpression > .operator',
+			'.UnaryExpression > .operator',
+			'.UpdateExpression > .operator'
+		],
+		function() {
+			$(this).parent().addClass('highlight-operator')
+		},
+		function() {
+			$(this).parent().removeClass('highlight-operator')
+		}
+	)
+
+	util.mouse_enter_leave(
+		[
+			'.SequenceExpression > .expressions > .operator'
+		],
+		function() {
+			$(this).parent().parent().addClass('highlight-operator')
+		},
+		function() {
+			$(this).parent().parent().removeClass('highlight-operator')
+		}
+	)
+}
+
 // 允许用户使用工具栏功能
 function can_use_toolbar() {
 	// 工具栏按钮功能
@@ -163,7 +219,8 @@ window.onload = function() {
 
 	can_switch_horizontal_vertical_layout()
 	can_collapse_expand()
-	can_use_toolbar()
+	can_highlight_operator()
 	hide_unnecessary_exp_brace()
+	can_use_toolbar()
 }
 // })

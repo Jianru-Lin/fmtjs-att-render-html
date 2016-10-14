@@ -236,3 +236,15 @@
 .collapsable.hidden {
 	display: none !important;
 }
+
+/* 操作符高亮实现 */
+
+#content .BinaryExpression.highlight-operator > .left,
+#content .BinaryExpression.highlight-operator > .right,
+#content .LogicalExpression.highlight-operator > .left,
+#content .LogicalExpression.highlight-operator > .right,
+#content .UnaryExpression.highlight-operator > .argument,
+#content .UpdateExpression.highlight-operator > .argument,
+#content .SequenceExpression.highlight-operator > .expressions > .expression {
+	outline: solid 1px #515151;
+}

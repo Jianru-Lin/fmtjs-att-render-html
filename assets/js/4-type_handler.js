@@ -1056,8 +1056,8 @@ type_handler['AssignmentExpression'] = function(ast, ctx) {
 			vsp(),
 			voperator('='),
 			vsp(),
-			// vdom('span', 'right', v_exp_brace(process_ast(ast.right, ctx)))
-			vdom('span', 'right', process_ast(ast.right, ctx))
+			vdom('span', 'right', v_exp_brace(process_ast(ast.right, ctx)))
+			// vdom('span', 'right', process_ast(ast.right, ctx))
 		]
 	)
 }
