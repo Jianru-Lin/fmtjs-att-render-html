@@ -1056,8 +1056,15 @@ type_handler['AssignmentExpression'] = function(ast, ctx) {
 			vsp(),
 			voperator('='),
 			vsp(),
-			vdom('span', 'right', v_exp_brace(process_ast(ast.right, ctx)))
-			// vdom('span', 'right', process_ast(ast.right, ctx))
+			function() {
+				// 赋值表达式的右侧如果为序列表达式则必须要补括号
+				if (ast.right.type === 'SequenceExpression') {
+					return vdom('span', 'right', v_exp_brace(process_ast(ast.right, ctx)))
+				}
+				else {
+					return vdom('span', 'right', process_ast(ast.right, ctx))
+				}
+			}
 		]
 	)
 }
