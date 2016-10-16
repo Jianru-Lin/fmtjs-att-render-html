@@ -1431,7 +1431,7 @@ type_handler['ThisExpression'] = function(ast, ctx) {
 }
 
 type_handler['Identifier'] = function(ast, ctx) {
-	return vdom('span', [ast.type, 'identifier'], ast.name)
+	return vdom('span', [ast.type, 'identifier', ast.name], ast.name)
 }
 
 type_handler['TemplateElement'] = function(ast, ctx) {

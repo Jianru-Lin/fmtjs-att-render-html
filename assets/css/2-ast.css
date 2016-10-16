@@ -159,6 +159,11 @@
 	background: #515151;
 }
 
+/* 用于实现高亮相同的标识符功能 */
+.Identifier.highlight {
+	outline: solid 1px yellow;
+}
+
 /*.MemberExpression:hover > .property > .Identifier {
     color: #e0d09e;
 }

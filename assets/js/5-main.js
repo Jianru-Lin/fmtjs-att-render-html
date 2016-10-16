@@ -253,6 +253,14 @@ function hide_unnecessary_exp_brace() {
 	$('.exp-brace > .collapsable > .MemberExpression').parent().parent().addClass('unnecessary')
 }
 
+// 点击高亮相同的标识符
+function can_highlight_same_identifier() {
+	$('.Identifier').click(function() {
+		var text = $(this).text()
+		$('.Identifier' + '.' + text).toggleClass('highlight')
+	})
+}
+
 // $(function() {
 window.onload = function() {
 	translator.run()
@@ -279,5 +287,6 @@ window.onload = function() {
 	can_highlight_operator()
 	hide_unnecessary_exp_brace()
 	can_use_toolbar()
+	can_highlight_same_identifier()
 }
 // })
