@@ -1,6 +1,10 @@
 var config = {}
 var type_handler = {}
 
+////////////////////////////////////////////////////////////////
+// 下面的各个类型处理函数专注于 VDOM 生成
+////////////////////////////////////////////////////////////////
+
 type_handler['Program'] = function(ast, ctx) {
 	ctx = ctx || {}
 	return vdom(
@@ -1517,29 +1521,9 @@ type_handler['Literal'] = function(ast, ctx) {
 	}
 }
 
-// 这个是用来和 [].map() 函数配合，进行节点包装的
-function wrap_vdom(name, attrs) {
-	return function(vdom_item) {
-		return vdom(name, attrs, [vdom_item])
-	}
-}
-
-function zip(list_a, list_b) {
-	assert(Array.isArray(list_a))
-	assert(Array.isArray(list_b))
-	// assert(list_a.length === list_b.length)
-	var new_list = []
-	for (var i = 0; i < list_a.length; ++i) {
-		new_list.push([list_a[i], list_b[i]])
-	}
-	return new_list
-}
-
-function process_ast_list(ast_list, ctx) {
-	return ast_list.map(function(ast) {
-		return process_ast(ast, ctx)
-	})
-}
+////////////////////////////////////////////////////////////////
+// 递归处理关键
+////////////////////////////////////////////////////////////////
 
 // 对指定的 AST 节点进行处理
 // 参数：
@@ -1580,9 +1564,45 @@ function process_ast(ast, ctx, ccfg) {
 	}
 }
 
+function process_ast_list(ast_list, ctx) {
+	return ast_list.map(function(ast) {
+		return process_ast(ast, ctx)
+	})
+}
+
+////////////////////////////////////////////////////////////////
+// 工具函数，很重要
+////////////////////////////////////////////////////////////////
+
+// 这个是用来和 [].map() 函数配合，进行节点包装的
+function wrap_vdom(name, attrs) {
+	return function(vdom_item) {
+		return vdom(name, attrs, [vdom_item])
+	}
+}
+
+function zip(list_a, list_b) {
+	assert(Array.isArray(list_a))
+	assert(Array.isArray(list_b))
+	// assert(list_a.length === list_b.length)
+	var new_list = []
+	for (var i = 0; i < list_a.length; ++i) {
+		new_list.push([list_a[i], list_b[i]])
+	}
+	return new_list
+}
+
 function assert(v) {
 	if (!v) {
 		debugger
 		throw new Error('assert failed')
 	}
+}
+
+// 对指定名称的类型处理函数进行包装替换
+// 这样我们就能在原有函数执行前后进行额外的处理
+function wrap_type_handler(name, new_handler_factory) {
+	assert(typeof type_handler[name] === 'function')
+	var handler = type_handler[name]
+	return new_handler_factory(handler)
 }
