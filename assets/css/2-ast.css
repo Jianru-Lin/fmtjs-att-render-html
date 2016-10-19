@@ -259,6 +259,8 @@
 #content .LogicalExpression.highlight-operator > .right,
 #content .UnaryExpression.highlight-operator > .argument,
 #content .UpdateExpression.highlight-operator > .argument,
-#content .SequenceExpression.highlight-operator > .expressions > .expression {
+#content .SequenceExpression.highlight-operator > .expressions > .expression,
+#content .MemberExpression.highlight-operator > .object,
+#content .MemberExpression.highlight-operator > .property {
 	outline: solid 1px #515151;
 }

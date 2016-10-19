@@ -227,6 +227,18 @@ function can_highlight_operator() {
 			$(this).parent().parent().removeClass('highlight-operator')
 		}
 	)
+
+	util.mouse_enter_leave(
+		[
+			'.MemberExpression > .dot'
+		],
+		function() {
+			$(this).parent().addClass('highlight-operator')
+		},
+		function() {
+			$(this).parent().removeClass('highlight-operator')
+		}
+	)
 }
 
 // 允许用户使用工具栏功能
