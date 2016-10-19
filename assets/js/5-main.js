@@ -268,8 +268,18 @@ function hide_unnecessary_exp_brace() {
 // 点击高亮相同的标识符
 function can_highlight_same_identifier() {
 	$('.Identifier').click(function() {
-		var text = $(this).text()
-		$('.Identifier' + '.' + text).toggleClass('highlight')
+		// 当前标识符已经是高亮的？则关闭高亮即可
+		if ($(this).hasClass('highlight')) {
+			$('.Identifier.highlight').removeClass('highlight')
+		}
+		// 否则关闭已经高亮的，再高亮新的
+		else {
+			// 首先取消掉已经高亮的
+			$('.Identifier.highlight').removeClass('highlight')
+			// 然后才是高亮相同的
+			var text = $(this).text()
+			$('.Identifier' + '.' + text).toggleClass('highlight')
+		}
 	})
 }
 
