@@ -808,7 +808,7 @@ type_handler['ForStatement'] = function(ast, ctx) {
 	// console.log(ast)
 	return vdom(
 		'div',
-		'ast.type',
+		ast.type,
 		[
 			vkeyword('for'),
 			vsp(),
