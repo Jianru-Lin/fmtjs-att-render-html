@@ -1296,7 +1296,9 @@ type_handler['ObjectExpression'] = function(ast, ctx) {
 		ast.type,
 		vdom('span', 'properties', vbracket(function() {
 			if (!ast.properties || ast.properties.length < 1) return
-			return process_ast_list(ast.properties, ctx).map(wrap_vdom('div', 'property'))
+			return vjoin(process_ast_list(ast.properties, ctx).map(wrap_vdom('span', 'property')), function() {
+				return [vcomma(), vsp()]
+			})
 		}))
 	)
 }

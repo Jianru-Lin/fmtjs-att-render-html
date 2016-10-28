@@ -121,6 +121,7 @@
 /* 用于支持水平布局模式和垂直布局模式间切换 */
 
 #content .SequenceExpression > .expressions > .operator,
+#content .ObjectExpression > .properties > .collapsable.bracket > .comma,
 #content .ArrayExpression > .elements > .collapsable.square-bracket > .comma,
 #content .ArrayPattern > .elements > .collapsable.square-bracket > .comma,
 #content .FunctionExpression > .params > .collapsable > .comma,
@@ -132,6 +133,7 @@
 }
 
 #content .SequenceExpression.vertical-layout > .expressions > .sp,
+#content .ObjectExpression > .properties > .collapsable.bracket.vertical-layout > .sp,
 #content .ArrayExpression > .elements > .collapsable.square-bracket.vertical-layout > .sp,
 #content .ArrayPattern > .elements > .collapsable.square-bracket.vertical-layout > .sp,
 #content .FunctionExpression > .params > .collapsable.vertical-layout > .sp,

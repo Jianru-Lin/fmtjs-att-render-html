@@ -69,6 +69,17 @@ function can_switch_horizontal_vertical_layout() {
 		$SequenceExpression.toggleClass('area')
 	})
 
+	// ObjectExpression
+
+	$('#content').on('click', '.ObjectExpression > .properties > .collapsable.bracket > .comma', function() {
+		$this = $(this)
+		$collapsable = $this.parent()
+		$collapsable.toggleClass('vertical-layout')
+		$collapsable.toggleClass('area')
+	})
+
+	$('#content .ObjectExpression > .properties > .collapsable.bracket').addClass('vertical-layout')
+
 	// ArrayExpression
 
 	$('#content').on('click', '.ArrayExpression > .elements > .collapsable.square-bracket > .comma', function() {
