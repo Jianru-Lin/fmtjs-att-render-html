@@ -584,9 +584,17 @@ type_handler['Super'] = function(ast, ctx) {
 type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
 	// console.log(ast)
 	assert(ast.kind === 'var' || ast.kind === 'const' || ast.kind === 'let')
+
 	return vdom(
 		'div',
-		ast.type,
+		(function() {
+			if (ast.declarations.length > 1) {
+				return [ast.type, 'muti-declarations']
+			}
+			else {
+				return ast.type
+			}
+		})(),
 		[
 			vdom('span', ['kind', ast.kind], vkeyword(ast.kind)),
 			vsp(),
