@@ -68,6 +68,33 @@ function can_switch_horizontal_vertical_layout() {
 		$SequenceExpression.toggleClass('vertical-layout')
 		$SequenceExpression.toggleClass('area')
 	})
+	
+	// VariableDeclaration
+
+	$('#content').on('click', '.VariableDeclaration > .declarations > .comma', function() {
+		$this = $(this)
+		$VariableDeclaration = $this.parent().parent()
+		$VariableDeclaration.toggleClass('vertical-layout')
+		// 如果是处于 ForStatement 的 init 部分，则还需要加上 area 高亮切换
+		if (in_for_statement_init()) {
+			$declarations = $this.parent()
+			$declarations.toggleClass('area')			
+		}
+
+		function in_for_statement_init() {
+			var $parent1 = $VariableDeclaration.parent()
+			var $parent2 = $parent1.parent()
+			var $parent3 = $parent2.parent()
+			return (
+				$parent1.hasClass('init')
+				&& $parent2.hasClass('collapsable')
+				&& $parent3.hasClass('ForStatement')
+			)
+		}
+	})
+
+	$('#content .VariableDeclaration').addClass('vertical-layout')
+	$('#content .ForStatement > .collapsable > .init > .VariableDeclaration.muti-declarations > .declarations').addClass('area')
 
 	// ObjectExpression
 

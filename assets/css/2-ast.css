@@ -67,8 +67,7 @@
 .ClassDeclaration > .collapsable,
 .ClassExpression > .collapsable,
 .SwitchStatement > .collapsable,
-.BlockStatement > .body > .collapsable,
-.ForStatement > .collapsable > .init > .VariableDeclaration.muti-declarations {
+.BlockStatement > .body > .collapsable {
 	/*outline: solid 1px rgba(197, 197, 197, 0.2);*/
 	border-radius: 4px;
 	margin-top: -1em;
@@ -121,6 +120,7 @@
 /* 用于支持水平布局模式和垂直布局模式间切换 */
 
 #content .SequenceExpression > .expressions > .operator,
+#content .VariableDeclaration > .declarations > .comma,
 #content .ObjectExpression > .properties > .collapsable.bracket > .comma,
 #content .ArrayExpression > .elements > .collapsable.square-bracket > .comma,
 #content .ArrayPattern > .elements > .collapsable.square-bracket > .comma,
@@ -133,6 +133,7 @@
 }
 
 #content .SequenceExpression.vertical-layout > .expressions > .sp,
+#content .VariableDeclaration.vertical-layout > .declarations > .sp,
 #content .ObjectExpression > .properties > .collapsable.bracket.vertical-layout > .sp,
 #content .ArrayExpression > .elements > .collapsable.square-bracket.vertical-layout > .sp,
 #content .ArrayPattern > .elements > .collapsable.square-bracket.vertical-layout > .sp,

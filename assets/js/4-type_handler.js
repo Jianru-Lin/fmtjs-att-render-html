@@ -599,22 +599,15 @@ type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
 			vdom('span', ['kind', ast.kind], vkeyword(ast.kind)),
 			vsp(),
 			vdom('span', 'declarations', function() {
-				return process_ast_list(ast.declarations, ctx).map(function(declaration, i) {
-					return vdom('div', 'declaration', function() {
-						return [
-							declaration,
-							function() {
-								if (i === (ast.declarations.length - 1)) {
-									if (ccfg && ccfg.nosemi) return undefined
-									return [vsp(), vsemi()]
-								}
-								else {
-									return [vcomma()]
-								}
-							}
-						]
-					})
-				})
+				return [
+					vjoin(process_ast_list(ast.declarations, ctx).map(wrap_vdom('span', 'declaration')), function() {
+						return [vcomma(), vsp()]
+					}),
+					function() {
+						if (ccfg && ccfg.nosemi) return undefined
+						else return [vdom('span', 'sp-never-block', ' '), vsemi()]
+					}
+				]
 			})
 		]
 	)
