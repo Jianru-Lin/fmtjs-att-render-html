@@ -18,7 +18,7 @@ function render(att, options) {
 	})
 
 	function gen_init_code(att) {
-		var code = 'window.ast=JSON.parse(Base64.decode("?"));'.replace('?', base64(json(att)))
+		var code = 'window.att=JSON.parse(Base64.decode("?"));'.replace('?', base64(json(att)))
 		return code
 
 		function json(obj) {

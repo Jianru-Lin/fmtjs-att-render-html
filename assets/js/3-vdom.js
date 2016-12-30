@@ -7,6 +7,7 @@ function VDom(name, attrs, children) {
 VDom.prototype.toDom = function() {
 	var e = document.createElement(this.name)
 	var attrs = norm_attrs(this.attrs)
+	// console.log(attrs)
 	var children = norm_children(this.children)
 	if (attrs) {
 		for (var attr_name in attrs) {

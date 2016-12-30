@@ -305,6 +305,20 @@ function hide_unnecessary_exp_brace() {
 
 // 点击高亮相同的标识符
 function can_highlight_same_identifier() {
+	// 扫描所有的 .Identifier 收集其 data-id 属性，建立映射
+	var map_table = {}
+	$('.Identifier').each(function(i, element) {
+		var $element = $(element)
+		var name = 'id:' + $element.text()
+
+		if (!map_table[name]) {
+			map_table[name] = $element
+		}
+		else {
+			map_table[name] = map_table[name].add($element)
+		}
+	})
+
 	$('.Identifier').click(function() {
 		// 当前标识符已经是高亮的？则关闭高亮即可
 		if ($(this).hasClass('highlight')) {
@@ -315,8 +329,10 @@ function can_highlight_same_identifier() {
 			// 首先取消掉已经高亮的
 			$('.Identifier.highlight').removeClass('highlight')
 			// 然后才是高亮相同的
-			var text = $(this).text()
-			$('.Identifier' + '.' + text).toggleClass('highlight')
+			var name = 'id:' + $(this).text()
+			if (map_table[name]) {
+				map_table[name].addClass('highlight')
+			}
 		}
 	})
 }
@@ -325,10 +341,12 @@ function can_highlight_same_identifier() {
 window.onload = function() {
 	translator.run()
 
-	var ast = window.ast
+	var ast = window.att.ast
+	var ctx = window.att.ctx
+	// console.log(ctx)
 	try {
 		// $('#ast').text(JSON.stringify(ast, null, 4))
-		var vdom_item = process_ast(ast, {})
+		var vdom_item = process_ast(ast, ctx)
 		// $('#vdom').text(JSON.stringify(vdom_item, null, 4))
 		var dom = vdom_item.toDom()
 		$('#content').append(dom)

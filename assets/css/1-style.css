@@ -48,7 +48,6 @@ button:focus {
 
 #ast, #vdom, #content, #log {
 	white-space: pre;
-	padding: 1em;
 	background: whitesmoke;
 	color: #171717;
 }

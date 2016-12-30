@@ -6,10 +6,10 @@ var type_handler = {}
 ////////////////////////////////////////////////////////////////
 
 type_handler['Program'] = function(ast, ctx) {
-	ctx = ctx || {}
+	assert(ctx && true)
 	return vdom(
 		'div', 
-		ast.type,
+		[ast.type],
 		vdom('span', 'body', process_ast_list(ast.body, ctx))
 	)
 }
@@ -217,7 +217,7 @@ type_handler['FunctionDeclaration'] = function(ast, ctx) {
 	// console.log(ast)
 	return vdom(
 		'div',
-		ast.type,
+		[ast.type],
 		[
 			vdom('span', 'keyword','function'),
 			vsp(),
@@ -1438,7 +1438,14 @@ type_handler['ThisExpression'] = function(ast, ctx) {
 }
 
 type_handler['Identifier'] = function(ast, ctx) {
-	return vdom('span', [ast.type, 'identifier', ast.name], ast.name)
+	return vdom(
+		'span', 
+		{
+			'class': [ast.type, 'identifier'].join(' '),
+			'data-id': ast.fmtjs_id
+		}, 
+		ast.name
+	)
 }
 
 type_handler['TemplateElement'] = function(ast, ctx) {
@@ -1531,36 +1538,16 @@ type_handler['Literal'] = function(ast, ctx) {
 // 对指定的 AST 节点进行处理
 // 参数：
 // - ast: 目标 AST 节点（必填）
-// - ctx: 上下文对象（必填），层层传递，自动进行节点栈追逐
+// - ctx: 上下文对象（必填），层层传递
 // - ccfg: Child Config 子节点配置（必填）,这一参数只会传给直接下级节点，不会层层传递
 function process_ast(ast, ctx, ccfg) {
 	assert(ast && true)
 	assert(ctx && true)
-	// 必须要有 stack 属性，用于记录层次栈
-	ctx.stack = ctx.stack || []
-	// 支持 parent 方法，这样可以用于查询上级节点
-	ctx.parent = ctx.parent || function() {
-		var st = this.stack
-		var len = st.length
-		if (len >= 2) {
-			return st[len-2]
-		}
-		else {
-			return null
-		}
-	}
+
 	// 调用 type_handler 上对应的处理函数
 	if (type_handler[ast.type]) {
 		log('info', 'processing type' + ast.type)
-		// 调用前把当前节点入栈
-		ctx.stack.push(ast)
-		try {
-			return type_handler[ast.type](ast, ctx, ccfg)
-		}
-		finally {
-			// 调用后弹出当前节点
-			ctx.stack.pop()
-		}
+		return type_handler[ast.type](ast, ctx, ccfg)
 	}
 	else {
 		log('warning', 'unknown type: ' + ast.type)
