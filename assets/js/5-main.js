@@ -300,7 +300,7 @@ function hide_unnecessary_exp_brace() {
 	$('.exp-brace > .collapsable > .TaggedTemplateExpression').parent().parent().addClass('unnecessary')
 	$('.exp-brace > .collapsable > .TemplateLiteral').parent().parent().addClass('unnecessary')
 	$('.exp-brace > .collapsable > .ThisExpression').parent().parent().addClass('unnecessary')
-	$('.exp-brace > .collapsable > .MemberExpression').parent().parent().addClass('unnecessary')
+	// $('.exp-brace > .collapsable > .MemberExpression').parent().parent().addClass('unnecessary')
 }
 
 // 点击高亮相同的标识符
