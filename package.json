@@ -9,6 +9,6 @@
     "author": "Jianru Lin",
     "license": "MIT",
     "dependencies": {
-        "pug": "^2.0.0-beta6"
+        "fmtjs-web": "4.24.0"
     }
 }
