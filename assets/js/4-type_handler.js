@@ -7,6 +7,9 @@ var type_handler = {}
 
 type_handler['Program'] = function(ast, ctx) {
 	assert(ctx && true)
+
+	ast.body = ordered_body(ast.body)
+
 	return vdom(
 		'div', 
 		[ast.type],
@@ -215,6 +218,8 @@ type_handler['DebuggerStatement'] = function(ast, ctx) {
 
 type_handler['FunctionDeclaration'] = function(ast, ctx) {
 	// console.log(ast)
+	console.log(ast.body)
+
 	return vdom(
 		'div',
 		[ast.type],
@@ -449,6 +454,8 @@ type_handler['ExpressionStatement'] = function(ast, ctx) {
 }
 
 type_handler['BlockStatement'] = function(ast, ctx) {
+	ast.body = ordered_body(ast.body)
+
 	return vdom(
 		'div',
 		ast.type,
@@ -1558,6 +1565,33 @@ function process_ast_list(ast_list, ctx) {
 	return ast_list.map(function(ast) {
 		return process_ast(ast, ctx)
 	})
+}
+
+////////////////////////////////////////////////////////////////
+// 辅助函数，很重要
+////////////////////////////////////////////////////////////////
+
+// 这个函数可以把一个 function/program 内部整理为有序的形式
+// 把所有 sub-function 都排到末尾，而且以字母顺序排序
+function ordered_body(ast_body) {
+	if (!ast_body || ast_body.length < 1) return ast_body
+
+	var statements = []
+	var sub_functions = []
+
+	ast_body.forEach(function(item) {
+		if (item.type === 'FunctionDeclaration') {
+			sub_functions.push(item)
+		}
+		else {
+			statements.push(item)
+		}
+	})
+
+	sub_functions.sort(function(a, b) {
+		return a.id.name.toLowerCase() < b.id.name.toLowerCase() ? -1 : 1
+	})
+	return statements.concat(sub_functions)
 }
 
 ////////////////////////////////////////////////////////////////
