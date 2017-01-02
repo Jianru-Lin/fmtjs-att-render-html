@@ -4,6 +4,9 @@ var fs = require('fs')
 var web = require('fmtjs-web')
 var web_cache = require('fmtjs-web/cache')
 
+// start web server in background
+web.start_bg()
+
 module.exports = render
 
 function render(att, options) {
