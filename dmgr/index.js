@@ -30,7 +30,7 @@ exports.save = function(data) {
 	})
 
 	web_ditem.create(id, data)
-	return web_ditem.url_of(id)
+	return id
 }
 
 function hash(text) {
