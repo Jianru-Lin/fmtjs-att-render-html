@@ -1,6 +1,6 @@
 {
     "name": "fmtjs-att-render-html",
-    "version": "5.7.0",
+    "version": "5.8.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -9,6 +9,6 @@
     "author": "Jianru Lin",
     "license": "MIT",
     "dependencies": {
-        "fmtjs-web": "5.7.0"
+        "fmtjs-web": "5.8.0"
     }
 }
